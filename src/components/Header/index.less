@@ -1,0 +1,93 @@
+@fff50: #8c8c8c;
+@fff30: #4d4d4d;
+@2087FF30: #004799;
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 20px 20px 30px;
+    background: #050B2C;
+    .leftContent{
+        display: flex;
+        padding: 25px 0;
+        .companyLogo{
+            width: 90px;
+            height: 90px;
+        }
+        .nameBox{
+            padding: 21px 14px 12px 21px;
+            .mainName{
+                margin-bottom: 7px;
+                font-size: 20px;
+                font-family: PingFangSC-Semibold, PingFang SC;
+                font-weight: 600;
+                color: #FFFFFF;
+                line-height: 28px;
+            }
+            .secondName{
+                font-size: 16px;
+                font-family: PingFangSC-Regular, PingFang SC;
+                font-weight: 400;
+                color: #FFFFFF;
+                line-height: 22px;
+            }
+        }
+    }
+    .rightContent{
+        color: #FFFFFF;
+        .logoBox{
+            display: flex;
+            flex-direction: row-reverse;
+            margin-bottom: 42px;
+            padding: 10px 2px;
+            .homeBox{
+                margin-right: 6px;
+                width: 30px;
+                height: 30px;
+            }
+            .text{
+                font-size: 20px;
+                font-family: PingFangSC-Medium, PingFang SC;
+                font-weight: 500;
+                color: #FFFFFF;
+                line-height: 28px;
+            }
+        }
+        .infoBox{
+            display: flex;
+            .nameBox{
+                margin-right: 30px;
+                padding: 15px 20px 14px 20px;
+                &:hover{
+                    background: #181E45;
+                    cursor: pointer;
+                }
+                .text{
+                    width: 70px;
+                    font-size: 16px;
+                    font-family: HelveticaNeue-Medium, HelveticaNeue;
+                    font-weight: 500;
+                    color: #FFFFFF;
+                    line-height: 19px;
+                    overflow: hidden;/*超出部分隐藏*/
+                    white-space: nowrap;/*不换行*/
+                    text-overflow:ellipsis;/*超出部分文字以...显示*/
+                }
+            }
+            .leaveBtn{
+                padding: 13px 20px;
+                font-size: 16px;
+                font-family: PingFangSC-Regular, PingFang SC;
+                font-weight: 400;
+                color: #FFFFFF;
+                line-height: 22px;
+                border-radius: 6px;
+                border: 1px solid #2087FF;
+                &:hover{
+                    background: #181E45;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
