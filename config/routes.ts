@@ -31,12 +31,6 @@
     ],
   },
   {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
-  {
     name: 'union.index',
     icon: 'table',
     layout: false,

@@ -4,11 +4,13 @@ import {
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useState, useMemo } from 'react';
 import { uploadApi } from '@/dictionary'
+import { getAreaTree } from '@/services/ant-design-pro/api';
 import Header from '@/components/Header'
 import Diveder from '@/components/Y/Divider'
 import Tags from '@/components/Y/Tags'
 import Address from '@/components/Y/Address'
 import UploadList from '@/components/Y/UploadList'
+import { history, useModel } from 'umi';
 import styles from './index.less';
 
 const { Step } = Steps;
@@ -34,10 +36,12 @@ const steps = [
   },
 ];
 const Join = () => {
+  const { initialState, setInitialState } = useModel('@@initialState');
   const [current, setCurrent] = useState(0);
-  const [type, setType] = useState('joinStep');
+  const [type, setType] = useState('join');
   const [introduceData, setIntroduceData] = useState<any>({});
   const [intelligenceData, setIntelligenceData] = useState<any>({});
+  const [areaTreeData, setAreaTreeData] = useState<any>([]);
   const [form] = Form.useForm();
   const next = () => {
     setCurrent(current + 1);
@@ -47,6 +51,12 @@ const Join = () => {
   };
   const onValuesChange = (allValues: any) => {console.log(allValues)}
   const onFinish = () => {}
+  const handleToJoin = async() => {
+    setType('joinStep')
+    // 设置区域原数据
+    const res = await getAreaTree()
+    setAreaTreeData(res)
+  }
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -68,24 +78,24 @@ const Join = () => {
         >
           <Form.Item
             label="手机号码"
-            name="phone"
+            name="mobileNo"
             rules={[{ required: true }]}
           >
             <>
-            <div className={styles.phoneNumber}>18655556666</div>
+            <div className={styles.phoneNumber}>{ initialState?.currentUser?.mobileNo }</div>
             <div className={styles.bottomTips}>申请账号将成为店铺所有者账号，拥有该店铺在食上云平台最高管理权限，如需更换，请点击右上角退出登录更换账号。</div>
             </>
           </Form.Item>
           <Form.Item
             label="经营者姓名"
-            name="phone"
+            name="userName"
             rules={[{ required: true, message: '请输入经营者姓名!' }]}
           >
             <Input placeholder="请输入经营者姓名" />
           </Form.Item>
           <Form.Item
             label="经营者身份证号"
-            name="phone"
+            name="cardNo"
             rules={[{ required: true, message: '请输入身份证号码!' }]}
           >
             <InputNumber
@@ -97,7 +107,7 @@ const Join = () => {
           <Diveder text="店铺简介" style={{ marginTop: '44px', marginBottom: '21px' }} />
           <Form.Item
             label="店铺LOGO"
-            name="phone"
+            name="storeLogo"
           >
             <Upload
               action={uploadApi}
@@ -284,7 +294,7 @@ const Join = () => {
         </div>
       </div>
     </>
-  }, [current])
+  }, [current, type])
   return (
     <div className={styles.joinContainer}>
       <Header />
@@ -299,7 +309,7 @@ const Join = () => {
               <div className={styles.joinTitle}>商家入驻</div>
               <div className={styles.text1}>适用于商家店铺</div>
               <div className={styles.text2}>需提交营业执照与商家资质证明</div>
-              <div className={styles.btn}>商家入驻</div>
+              <div onClick={handleToJoin} className={styles.btn}>商家入驻</div>
             </div>
           </div>
         </div>

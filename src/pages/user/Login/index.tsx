@@ -1,4 +1,4 @@
-import { login } from '@/services/ant-design-pro/api';
+import { login, checkPhone, getSms } from '@/services/ant-design-pro/api';
 import { Alert, message, Tabs, Form, Input, Button, InputNumber, Radio } from 'antd';
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { history, useModel } from 'umi';
@@ -56,6 +56,7 @@ const Login = () => {
   const handleGetCaptcha = async (values: any) => {
     setHasCaptcha(true)
     setCaptchaTime(initCaptchaTime)
+    getSms({ mobileNo: form.getFieldValue('mobileNo'), smsScene: isNew ? 1 : 2 })
     const captchaInterval = setInterval(() => {
       if (countRef.current === 0) {
         clearInterval(intervalRef.current);
@@ -68,10 +69,11 @@ const Login = () => {
   const handleType = (targetType: string) => {
     setType(targetType)
   }
-  const handleChangePhone = throttle((value: number) => {
+  const handleChangePhone = throttle(async (value: number) => {
     if (`${value}`.length === 11) {
-      console.log('查询是否已注册')
-      setIsNew(true)
+      // 查电话是否注册
+      const flag = await checkPhone({ mobileNo: value})
+      setIsNew(flag)
     }
   }, 800)
   const handleWeixinCodeHover = (targetType: string) => {
@@ -151,7 +153,7 @@ const Login = () => {
                   className={`${type === 'account' && styles.formBox}`}
                 >
                   <Form.Item
-                    name="phoneNumber"
+                    name="mobileNo"
                     rules={[{ required: true, message: '请输入手机号码！' }]}
                   >
                     <InputNumber
@@ -252,7 +254,7 @@ const Login = () => {
                   onFinish={handleSubmit}
                 >
                   <Form.Item
-                    name="phoneNumber"
+                    name="mobileNo"
                     rules={[{ required: true, message: '请输入手机号码！' }]}
                   >
                     <InputNumber
