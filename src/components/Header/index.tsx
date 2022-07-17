@@ -1,12 +1,11 @@
-import React, {
-    useState,
+import {
     useCallback,
     useMemo,
     useRef,
     useEffect
   } from 'react';
   import { Image, Spin } from 'antd';
-  import { errorPic } from '@/dictionary/index'
+  import HomeLogo from '@/assets/images/logo.png'
   import { stringify } from 'querystring';
   import { outLogin } from '@/services/ant-design-pro/api';
   import { history, useModel } from 'umi';
@@ -71,7 +70,7 @@ const loginOut = async () => {
             preview={false}
             className={styles.companyLogo}
             src={currentUser.companyLogo}
-            fallback={errorPic}
+            fallback={HomeLogo}
             />
           <div className={styles.nameBox}>
             <div className={styles.mainName}>reactreact</div>

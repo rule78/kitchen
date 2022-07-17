@@ -1,0 +1,69 @@
+@fff50: #8c8c8c;
+@fff30: #4d4d4d;
+@fff70: #b3b3b3;
+@2087FF30: #004799;
+
+.home{
+    .container{
+      position: relative;
+      display: flex;
+      width: 100%;
+      height: calc(100vh - 182px);
+      padding-top: 20px;
+      background: #000524;
+      overflow: hidden;
+      .drawerBox{
+        margin-right: 20px;
+        width: 360px;
+        height: 100%;
+        background: #050B2C;
+      }
+      .tableBox{
+        padding: 40px;
+        width: calc(100vw - 360px);
+        background: #050B2C;
+        .tableHeader{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+          .title{
+            font-size: 20px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: #FFFFFF;
+            line-height: 28px;
+          }
+          .addBtn{
+            padding: 7px 24px 6px 24px;
+            background: #2087FF;
+            border-radius: 6px;
+            color: #FFFFFF;
+            cursor: pointer;
+          }
+        }
+        :global(.ant-table-thead > tr > th) {
+          background: #091234;
+          color: @fff50;
+        }
+      }
+    }
+}
+.formBox{
+}
+:global(.ant-modal-header) {
+  background: #001833;
+}
+:global(.ant-modal-title) {
+  font-size: 20px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 28px;
+}
+:global(.anticon){
+  color: @fff70;
+}
+:global(.ant-modal-body){
+  background: #050B2C;
+}

@@ -50,7 +50,20 @@
     path: '/union/join',
     component: './Union/Join',
   },
-
+  {
+    name: 'union.login',
+    icon: 'table',
+    layout: false,
+    path: '/union/login',
+    component: './Union/login',
+  },
+  {
+    name: 'union.list',
+    icon: 'table',
+    layout: false,
+    path: '/union/list',
+    component: './Union/list',
+  },
   {
     path: '/',
     redirect: '/welcome',

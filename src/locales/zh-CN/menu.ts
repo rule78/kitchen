@@ -32,6 +32,8 @@ export default {
   
   'menu.union.join': '申请入住',
   'menu.union.index': '智慧食安',
+  'menu.union.login': '登录',
+  'menu.union.list': '政府后台',
 
   'menu.profile': '详情页',
   'menu.profile.basic': '基础详情页',

@@ -2,6 +2,7 @@
 
 @fff50: #8c8c8c;
 @fff30: #4d4d4d;
+@fff70: #b3b3b3;
 @2087FF30: #004799;
 
 html,
@@ -105,6 +106,7 @@ ol {
 }
 .ant-form-item-label > label{
   font-size: 16px !important;
+  color: @fff70;
 }
 .ant-select-selector{
   padding: 10px !important;
@@ -172,4 +174,58 @@ ol {
 .ant-steps-item-wait .ant-steps-item-title::after{
   top: -22px;
   background-color: #0077ff !important;
+}
+.ant-steps-item-finish > .ant-steps-item-title{
+  font-size: 16px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #15B8F7 !important;
+  line-height: 22px;
+}
+.ant-steps-item-finish .ant-steps-item-title::after{
+  top: -22px;
+  background-color: #2087FF !important;
+}
+.ant-steps-item-finish .ant-steps-item-icon{
+  display: block;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background: url('./assets/images/step_done.png') no-repeat 100%;
+  border-radius: 50%;
+  border: none !important;
+  line-height: 40px;
+}
+
+.ant-form-item-extra{
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: @fff30;
+  line-height: 20px;
+}
+
+.ant-picker{
+  padding: 12px 11px;
+  border-radius: 6px;
+  color: #fff;
+  border: 1px solid @2087FF30;
+  background: #0F1739 !important;
+  &:hover{
+    background: #0F1739 !important;
+  }
+}
+.ant-picker-input > input{
+  color: #fff;
+}
+.anticon-close-circle{
+  background: #0F1739 !important;
+  color: @fff70;
+}
+.ant-radio-wrapper{
+  font-size: 16px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: @fff70;
+  line-height: 22px;
 }

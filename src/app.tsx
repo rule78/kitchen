@@ -75,16 +75,21 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       }
     },
     links: [],
-    // 增加一个 loading 的状态
     childrenRender: (children, props) => {
-      // if (initialState?.loading) return <PageLoading />;
+      let initSetting = initialState?.settings
+      if (location.pathname.includes('union/list')) {
+        initSetting = {
+          ...initSetting,
+          navTheme: 'realDark',
+        }
+      }
       return (
         <>
           {children}
             <SettingDrawer
               disableUrlParams
               enableDarkTheme
-              settings={initialState?.settings}
+              settings={initSetting}
               onSettingChange={(settings) => {
                 setInitialState((preInitialState) => ({
                   ...preInitialState,

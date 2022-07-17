@@ -2,6 +2,7 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile } from 'antd/es/upload/interface';
+import { uploadApi } from '@/dictionary'
 import { isArray } from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { cloneDeep } from 'lodash'
@@ -96,7 +97,7 @@ const UploadList: React.FC = ({ onChange, value }: any) => {
           className="avatar-uploader"
           showUploadList={false}
           maxCount={1}
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          action={uploadApi}
           beforeUpload={beforeUpload}
           onChange={(info) => handleChange(info, 'first')}
         >
@@ -111,7 +112,7 @@ const UploadList: React.FC = ({ onChange, value }: any) => {
           className="avatar-uploader"
           showUploadList={false}
           maxCount={1}
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          action={uploadApi}
           beforeUpload={beforeUpload}
           onChange={(info) => handleChange(info, 'second')}
         >
@@ -126,7 +127,7 @@ const UploadList: React.FC = ({ onChange, value }: any) => {
           className="avatar-uploader"
           showUploadList={false}
           maxCount={1}
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          action={uploadApi}
           beforeUpload={beforeUpload}
           onChange={(info) => handleChange(info, 'third')}
         >
