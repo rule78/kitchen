@@ -1,9 +1,10 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Input, Tag, Tooltip } from 'antd';
+import { isArray } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.less';
 
-const Tags = () => {
+const Tags: React.FC = ({ onChange, value }: any) => {
   const [tags, setTags] = useState<Array<string>>([]);
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState<string>('');
@@ -11,6 +12,11 @@ const Tags = () => {
   const [editInputValue, setEditInputValue] = useState('');
   const inputRef = useRef(null);
   const editInputRef = useRef(null);
+  useEffect(() => {
+    if (value && isArray(value)) {
+      setTags(value)
+    }
+  }, [value])
   useEffect(() => {
     if (inputVisible) {
       const { current } = inputRef as any
@@ -24,8 +30,7 @@ const Tags = () => {
 
   const handleClose = (removedTag: any) => {
     const newTags = tags.filter((tag) => tag !== removedTag);
-    console.log(newTags);
-    setTags(newTags);
+    onChange(newTags);
   };
 
   const showInput = () => {
@@ -38,7 +43,7 @@ const Tags = () => {
 
   const handleInputConfirm = () => {
     if (inputValue && tags.indexOf(inputValue) === -1) {
-      setTags([...tags, inputValue]);
+      onChange([...tags, inputValue]);
     }
 
     setInputVisible(false);
@@ -52,7 +57,7 @@ const Tags = () => {
   const handleEditInputConfirm = () => {
     const newTags = [...tags];
     newTags[editInputIndex] = editInputValue;
-    setTags(newTags);
+    onChange(newTags);
     setEditInputIndex(-1);
     setInputValue('');
   };

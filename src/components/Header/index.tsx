@@ -73,8 +73,8 @@ const loginOut = async () => {
             fallback={HomeLogo}
             />
           <div className={styles.nameBox}>
-            <div className={styles.mainName}>reactreact</div>
-            <div className={styles.secondName}>reactreactreactreactreactreact</div>
+            <div className={styles.mainName}>{currentUser.mainName}</div>
+            <div className={styles.secondName}>{currentUser.secondName}</div>
           </div>
         </div>
         <div className={styles.rightContent}>

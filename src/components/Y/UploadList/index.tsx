@@ -42,11 +42,6 @@ const UploadList: React.FC = ({ onChange, value }: any) => {
       setImagesUrl(value)
     }
   }, [value])
-  useEffect(() => {
-    if (imagesUrl && isArray(imagesUrl)) {
-      onChange(imagesUrl)
-    }
-  }, [imagesUrl])
   const handleChange: any = (info: UploadChangeParam<UploadFile>, type : string) => {
     if (info.file.status === 'uploading') {
       setLoading((value) => {
@@ -66,17 +61,15 @@ const UploadList: React.FC = ({ onChange, value }: any) => {
             [type]: false
           }
         });
-        setImagesUrl((val) => {
-          let list = cloneDeep(val)
-          if (type === 'first') {
-            list[0] = url;
-          } else if (type === 'second') {
-            list[1] = url;
-          } else {
-            list[2] = url;
-          }
-          return list
-        })
+        let list = cloneDeep(imagesUrl)
+        if (type === 'first') {
+          list[0] = url;
+        } else if (type === 'second') {
+          list[1] = url;
+        } else {
+          list[2] = url;
+        }
+        onChange(list)
       });
     }
   };

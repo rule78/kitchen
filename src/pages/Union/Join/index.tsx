@@ -12,6 +12,7 @@ import Address from '@/components/Y/Address'
 import UploadList from '@/components/Y/UploadList'
 import { history, useModel } from 'umi';
 import styles from './index.less';
+import { isArray } from 'lodash';
 
 const { Step } = Steps;
 const { Option } = Select;
@@ -42,8 +43,17 @@ const Join = () => {
   const [introduceData, setIntroduceData] = useState<any>({});
   const [intelligenceData, setIntelligenceData] = useState<any>({});
   const [areaTreeData, setAreaTreeData] = useState<any>([]);
-  const [form] = Form.useForm();
-  const next = () => {
+  const [introduceForm] = Form.useForm();
+  const [intelligenceForm] = Form.useForm();
+  const next = async () => {
+    if (steps[current].type === 'introduce') {
+      try {
+        const values = await introduceForm.validateFields();
+        console.log('Success:', values);
+      } catch (errorInfo) {
+        console.log('Failed:', errorInfo);
+      }
+    }
     setCurrent(current + 1);
   };
   const prev = () => {
@@ -56,6 +66,13 @@ const Join = () => {
     // 设置区域原数据
     const res = await getAreaTree()
     setAreaTreeData(res)
+  }
+  const validatMainType = (_, value: any) => {
+    if (value && isArray(value)) {
+      return Promise.resolve()
+    } else {
+      return Promise.reject(new Error('Should accept agreement'))
+    }
   }
   const uploadButton = (
     <div>
@@ -71,7 +88,7 @@ const Join = () => {
           name="basic"
           {...formItemLayout}
           initialValues={introduceData}
-          form={form}
+          form={introduceForm}
           onValuesChange={onValuesChange}
           onFinish={onFinish}
           autoComplete="off"
@@ -79,7 +96,6 @@ const Join = () => {
           <Form.Item
             label="手机号码"
             name="mobileNo"
-            rules={[{ required: true }]}
           >
             <>
             <div className={styles.phoneNumber}>{ initialState?.currentUser?.mobileNo }</div>
@@ -132,13 +148,16 @@ const Join = () => {
             <Select
               placeholder="请选择经营类型"
             >
-              <Option value="male">male</Option>
+              <Option value="pig">猪肉</Option>
             </Select>
           </Form.Item>
           <Form.Item
             label="主营产品"
-            name="tag"
-            rules={[{ required: true, message: '请选择主营产品!' }]}
+            name="mainType"
+            rules={[
+              { required: true, type: 'array', message: '请选择主营产品!' },
+              { validator: validatMainType }
+            ]}
           >
             <Tags />
           </Form.Item>
@@ -156,7 +175,7 @@ const Join = () => {
             <UploadList />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 6, span: 14 }}>
-            <div className={styles.submitBtn} onClick={next}>下一步</div>
+            <div className={styles.submitBtn} onClick={() => next()}>下一步</div>
           </Form.Item>
         </Form>
       </div>
@@ -167,7 +186,7 @@ const Join = () => {
           name="basic"
           {...formItemLayout}
           initialValues={intelligenceData}
-          form={form}
+          form={intelligenceForm}
           onValuesChange={onValuesChange}
           onFinish={onFinish}
           autoComplete="off"
@@ -277,8 +296,8 @@ const Join = () => {
             </Upload>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 6, span: 14 }}>
-            <div className={styles.preBtn} onClick={prev}>上一步</div>
-            <div className={styles.nextBtn} onClick={next}>下一步</div>
+            <div className={styles.preBtn} onClick={() => prev()}>上一步</div>
+            <div className={styles.nextBtn} onClick={() => next()}>下一步</div>
           </Form.Item>
         </Form>
       </>
@@ -289,8 +308,8 @@ const Join = () => {
         <TextArea rows={8} style={{ marginBottom: '16px' }} />
         <Radio value="agree">已阅读并同意协议</Radio>
         <div className={styles.btnBox}>
-          <div className={styles.preBtn} onClick={prev}>上一步</div>
-          <div className={styles.nextBtn} onClick={next}>提 交</div>
+          <div className={styles.preBtn} onClick={() => prev()}>上一步</div>
+          <div className={styles.nextBtn} onClick={() => next()}>提 交</div>
         </div>
       </div>
     </>
@@ -309,7 +328,7 @@ const Join = () => {
               <div className={styles.joinTitle}>商家入驻</div>
               <div className={styles.text1}>适用于商家店铺</div>
               <div className={styles.text2}>需提交营业执照与商家资质证明</div>
-              <div onClick={handleToJoin} className={styles.btn}>商家入驻</div>
+              <div onClick={() => handleToJoin()} className={styles.btn}>商家入驻</div>
             </div>
           </div>
         </div>

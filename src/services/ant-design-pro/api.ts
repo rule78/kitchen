@@ -79,9 +79,12 @@ export async function getUserInfo(userId: number) {
 export async function currentUser(options?: { [key: string]: any }) {
   return {
     data: {
+      mainName: '测试商铺',
+      secondName: '测试商铺描述',
       name: '测试账号',
       identityType: 1,
       relateId: 999,
+      mobileNo: 15213161818
     }
   }
 }
