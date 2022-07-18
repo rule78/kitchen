@@ -71,7 +71,7 @@ const loginOut = async () => {
             height={90}
             preview={false}
             className={styles.companyLogo}
-            src={currentUser.companyLogo}
+            src={HomeLogo}
             fallback={HomeLogo}
             />
           <div className={styles.nameBox}>

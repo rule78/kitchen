@@ -20,14 +20,15 @@ declare namespace API {
     };
     address?: string;
     phone?: string;
-    mobileNo?: string;
     tags?: { key?: string; label?: string }[]; // 角色
     group?: string; // 商家类型
     homeLogo?: string; // 商家logo
     mainName?: string;
     secondName?: string;
+    name?: string;
     identityType?: number;
     relateId?: number;
+    mobileNo?: string;
   };
 
   type LoginResult = {

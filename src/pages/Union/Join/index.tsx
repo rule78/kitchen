@@ -205,7 +205,7 @@ const Join = () => {
           <Diveder text="营业执照" style={{ marginTop: '54px', marginBottom: '21px' }} />
           <Form.Item
             label="营业执照"
-            name="phone"
+            name="zhizhao"
             rules={[{ required: true, message: '请上传营业执照！' }]}
             extra="证件文字清晰，建议使用原图"
           >
@@ -225,7 +225,7 @@ const Join = () => {
           </Form.Item>
           <Form.Item
             label="营业执照名称"
-            name="societyCode"
+            name="societyName"
             rules={[{ required: true }]}
           >
             <Input placeholder="请输入营业执照“名称”一栏的内容" />
@@ -233,12 +233,12 @@ const Join = () => {
           <Form.Item
             label="营业执照有效期"
             name="outDate"
-            rules={[{ required: true }]}
           >
             <Row gutter={8}>
               <Col span={15}>
                 <Form.Item
                   name="outDate"
+                  rules={[{ required: true }]}
                   noStyle
                 >
                    <DPicker style={{ width: '100%' }} />

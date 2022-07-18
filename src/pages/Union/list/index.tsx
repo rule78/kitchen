@@ -12,18 +12,25 @@ import styles from './index.less';
 interface DataType {
   key: string;
   name: string;
+  age: number
 }
 
 const data: DataType[] = [
   {
     key: '1',
-    name: 'John Brown',
+    name: '大斌',
+    age: 5,
   },
   {
     key: '2',
-    name: 'John Brown',
+    name: '晓斌',
+    age: 5,
   },
 ]
+const layout = {
+  labelCol: { span: 5 },
+  wrapperCol: { span: 16 },
+};
 
 const List: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -40,22 +47,22 @@ const List: React.FC = () => {
   }
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Name',
+      title: '名字',
       dataIndex: 'name',
       key: 'name',
       render: text => <a>{text}</a>,
     },
     {
-      title: 'Age',
-      dataIndex: 'name',
-      key: 'name',
+      title: '年龄',
+      dataIndex: 'age',
+      key: 'age',
     },
     {
-      title: 'Action',
+      title: '操作',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a>复制邀请码 {record.name}</a>
+          <a>复制邀请码</a>
           <a>查看</a>
           <a>修改</a>
         </Space>
@@ -96,28 +103,38 @@ const List: React.FC = () => {
 
         <Form
           form={form}
+          {...layout}
           className={styles.formBox}
           autoComplete="off"
         >
-          <Diveder text="营业执照" style={{ marginTop: '44px', marginBottom: '21px' }} />
+          <Diveder text="身份及账号" style={{ marginTop: '20px', marginBottom: '21px' }} />
           <Form.Item
             label="手机号码"
             name="phoneNumber"
             rules={[{ required: true }]}
             extra={'员工注册后会自动展示注册手机号'}
           >
-            未注册
+            <div className={styles.text}>未注册</div>
           </Form.Item>
           <Form.Item
             label="所在部门"
             name="management"
             rules={[{ required: true, message: '请选择部门！' }]}>
-              <Select style={{ width: 120 }} >
-                <Select.Option value="jack">Jack</Select.Option>
+              <Select style={{ width: '100%' }} >
+                <Select.Option value="jack">大厅</Select.Option>
+              </Select>
+          </Form.Item>
+          <Form.Item
+            label="具体岗位"
+            name="manager"
+            rules={[{ required: true, message: '请选择具体岗位！' }]}>
+              <Select style={{ width: '100%' }} >
+                <Select.Option value="jack">厨师</Select.Option>
               </Select>
           </Form.Item>
           <Form.Item
             name="zhengming"
+            label="法人身份证照片"
             rules={[{ required: true }]}
             extra={'请提供有效期范围内的证件，证件需露出四角'}
           >
@@ -130,12 +147,34 @@ const List: React.FC = () => {
             </Upload>
           </Form.Item>
           <Form.Item
-            name="zhenging"
+            name="personName"
+            label="姓名"
             rules={[{ required: true }]}
-            extra={'请提供有效期范围内的证件，证件需露出四角'}
           >
             <Input />
           </Form.Item>
+          <Form.Item
+            name="zhenging"
+            label="身份证号码"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Diveder text="资质证件" style={{ marginTop: '30px', marginBottom: '20px' }} />
+          <Form.Item
+            name="safe"
+            label="健康证"
+            extra={'图片清晰可见'}
+          >
+            <Upload
+              action={uploadApi}
+              listType="picture-card"
+              fileList={personData.safeFileList}
+            >
+              {personData.safeFileList?.length >= 8 ? null : uploadButton}
+            </Upload>
+          </Form.Item>
+          <div className={styles.submitBtn}>提交</div>
         </Form>
       </Modal>
     </div>
