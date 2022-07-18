@@ -11,6 +11,7 @@ import {
   import { history, useModel } from 'umi';
   import styles from './index.less';
   
+  const loginPath = '/user/login';
   /**
  * 退出登录，并且将当前的 url 保存
  */
@@ -19,9 +20,9 @@ const loginOut = async () => {
     const { query = {}, search, pathname } = history.location;
     const { redirect } = query;
     // Note: There may be security issues, please note
-    if (window.location.pathname !== '/user/login' && !redirect) {
+    if (!history.location.pathname.includes(loginPath) && !redirect) {
       history.replace({
-        pathname: '/user/login',
+        pathname: loginPath,
         search: stringify({
           redirect: pathname + search,
         }),
@@ -61,6 +62,7 @@ const loginOut = async () => {
     if (!currentUser || !currentUser.name) {
       return loading;
     }
+    const isHome = history.location.pathname.includes('union/index')
     return (
       <div className={styles.header}>
         <div className={styles.leftContent}>
@@ -83,7 +85,11 @@ const loginOut = async () => {
             <div className={styles.homeBox}></div>
           </div>
           <div className={styles.infoBox}>
-            <div className={styles.nameBox} style={{ marginRight: 0 }}><div className={styles.text}>申请入住</div></div>
+            {
+              isHome && (<div className={styles.nameBox} style={{ marginRight: 0 }}>
+                <div className={styles.text}>申请入驻</div>
+              </div>)
+            }
             <div className={styles.nameBox}><div className={styles.text}>{currentUser.name}</div></div>
             <div className={styles.leaveBtn} onClick={onMenuClick}>退出</div>
           </div>

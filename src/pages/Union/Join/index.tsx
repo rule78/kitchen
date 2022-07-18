@@ -52,7 +52,19 @@ const Join = () => {
         console.log('Success:', values);
       } catch (errorInfo) {
         console.log('Failed:', errorInfo);
+        return
       }
+    } else if (steps[current].type === 'intelligence') {
+      try {
+        const values = await intelligenceForm.validateFields();
+        console.log('Success:', values);
+      } catch (errorInfo) {
+        console.log('Failed:', errorInfo);
+        return
+      }
+    } else {
+      history.push('/union/login');
+      return
     }
     setCurrent(current + 1);
   };
@@ -71,7 +83,7 @@ const Join = () => {
     if (value && isArray(value)) {
       return Promise.resolve()
     } else {
-      return Promise.reject(new Error('Should accept agreement'))
+      return Promise.reject(new Error('请选择主营产品'))
     }
   }
   const uploadButton = (
@@ -155,8 +167,7 @@ const Join = () => {
             label="主营产品"
             name="mainType"
             rules={[
-              { required: true, type: 'array', message: '请选择主营产品!' },
-              { validator: validatMainType }
+              { required: true, validator: validatMainType }
             ]}
           >
             <Tags />

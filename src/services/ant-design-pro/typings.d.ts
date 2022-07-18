@@ -24,6 +24,10 @@ declare namespace API {
     tags?: { key?: string; label?: string }[]; // 角色
     group?: string; // 商家类型
     homeLogo?: string; // 商家logo
+    mainName?: string;
+    secondName?: string;
+    identityType?: number;
+    relateId?: number;
   };
 
   type LoginResult = {
