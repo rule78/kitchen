@@ -130,7 +130,7 @@ const List: React.FC = () => {
             </Upload>
           </Form.Item>
           <Form.Item
-            name="zhengming"
+            name="zhenging"
             rules={[{ required: true }]}
             extra={'请提供有效期范围内的证件，证件需露出四角'}
           >

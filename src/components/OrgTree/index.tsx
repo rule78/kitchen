@@ -9,11 +9,11 @@ import { isArray } from 'lodash';
 
 const initData: DataNode[] = [
   {
-    title: 'parent 1',
+    title: '食区',
     key: '0-0',
     children: [
       {
-        title: 'parent 1-0',
+        title: '食区01',
         key: '0-0-0',
         children: [
           {
@@ -23,9 +23,9 @@ const initData: DataNode[] = [
         ],
       },
       {
-        title: 'parent 1-1',
+        title: '食区02',
         key: '0-0-1',
-        children: [{ title: 'sss', key: '0-0-1-0' }],
+        children: [{ title: '豫菜', key: '0-0-1-0' }],
       },
     ],
   },
