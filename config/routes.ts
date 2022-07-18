@@ -1,5 +1,8 @@
 ﻿export default [
   {
+    component: './404',
+  },
+  {
     path: '/user',
     layout: false,
     routes: [
@@ -60,9 +63,6 @@
   },
   {
     path: '/',
-    redirect: '/welcome',
-  },
-  {
-    component: './404',
+    redirect: '/user/login',
   },
 ];

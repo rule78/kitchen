@@ -31,27 +31,28 @@ const Login = () => {
     countRef.current = captchaTime;  
   });
   const handleSubmit = async (values: any) => {
-    try {
-      // 登录
-      const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
-        const defaultLoginSuccessMessage = '登录成功！';
-        message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
-        /** 此方法会跳转到 redirect 参数所在的位置 */
-        if (!history) return;
-        const { query } = history.location;
-        const { redirect } = query as any;
-        history.push(redirect || '/');
-        return;
-      }
-      console.log(msg);
-      // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
-    } catch (error) {
-      const defaultLoginFailureMessage = '登录失败，请重试！';
-      message.error(defaultLoginFailureMessage);
-    }
+    history.push('/union/join');
+    // try {
+    //   // 登录
+    //   const msg = await login({ ...values, type });
+    //   if (msg.status === 'ok') {
+    //     const defaultLoginSuccessMessage = '登录成功！';
+    //     message.success(defaultLoginSuccessMessage);
+    //     await fetchUserInfo();
+    //     /** 此方法会跳转到 redirect 参数所在的位置 */
+    //     if (!history) return;
+    //     const { query } = history.location;
+    //     const { redirect } = query as any;
+    //     history.push(redirect || '/');
+    //     return;
+    //   }
+    //   console.log(msg);
+    //   // 如果失败去设置用户错误信息
+    //   setUserLoginState(msg);
+    // } catch (error) {
+    //   const defaultLoginFailureMessage = '登录失败，请重试！';
+    //   message.error(defaultLoginFailureMessage);
+    // }
   };
   const handleGetCaptcha = async (values: any) => {
     setHasCaptcha(true)

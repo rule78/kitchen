@@ -6,7 +6,7 @@ import { request } from 'umi';
 export async function goRegister(
   params: { mobileNo?: number; password: string; },
 ) {
-  return request<any>('/mock/18/user/register', {
+  return request<any>('/mock/18/system/user/register', {
     method: 'POST',
     data: {
       ...params,
@@ -18,7 +18,7 @@ export async function goRegister(
 export async function goLogin(
   params: { mobileNo: number; password: string; },
 ) {
-  return request<any>('/mock/18/user/login', {
+  return request<any>('/mock/18/system/user/login', {
     method: 'POST',
     data: {
       ...params,
@@ -30,7 +30,7 @@ export async function goLogin(
 export async function updatePassword(
   params: { mobileNo: number; password: string; },
 ) {
-  return request<any>('/mock/18/user/updatePassword', {
+  return request<any>('/mock/18/system/user/updatePassword', {
     method: 'POST',
     data: {
       ...params,
@@ -42,7 +42,7 @@ export async function updatePassword(
 export async function checkPhone(
   params: { mobileNo?: number; },
 ) {
-  return request<any>('/mock/18/user/existUser', {
+  return request<any>('/mock/18/system/user/existUser', {
     method: 'GET',
     params: {
       ...params,
@@ -56,7 +56,7 @@ type smsSceneType = 1 | 2
 export async function getSms(
   params: { mobileNo: number; smsScene: smsSceneType },
 ) {
-  return request<any>('/mock/18/user/sendSms', {
+  return request<any>('/mock/18/system/user/sendSms', {
     method: 'GET',
     params: {
       ...params,
@@ -79,7 +79,7 @@ export async function getUserInfo(userId: number) {
 export async function currentUser(options?: { [key: string]: any }) {
   return {
     data: {
-      name: 'yanglilililii',
+      name: '测试账号',
       identityType: 1,
       relateId: 999,
     }
@@ -126,7 +126,7 @@ export async function rule(
 
 // 获取省市区乡镇层级树
 export async function getAreaTree() {
-  return request<any>('/mock/18/store/areaTree', {
+  return request<any>('/mock/18/main/store/areaTree', {
     method: 'GET',
   });
 }
