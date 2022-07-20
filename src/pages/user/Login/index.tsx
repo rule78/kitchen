@@ -1,8 +1,10 @@
-import { login, checkPhone, getSms } from '@/services/kitchen/api';
+import { goLogin, checkPhone, getSms, goRegister } from '@/services/kitchen/api';
 import { Alert, message, Tabs, Form, Input, Button, InputNumber, Radio } from 'antd';
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { history, useModel } from 'umi';
 import { throttle } from 'lodash'
+import { validateMobile } from '@/utils/index'
+import { setToken } from '@/utils/auth'
 import BgImg from '@/assets/images/home_content.png'
 import styles from './index.less';
 
@@ -16,6 +18,7 @@ const Login = () => {
   const [hasCaptcha, setHasCaptcha] = useState<boolean>(false);
   const [isNew, setIsNew] = useState<boolean>(false); // 是否新用户
   const [showCodeTips, setShowCodeTips] = useState<boolean>(false); // 是否新用户
+  const [captchaData, setCaptchaData] = useState<string>('');
   const intervalRef = useRef();
   const [form] = Form.useForm();
   const fetchUserInfo = async () => {
@@ -31,33 +34,40 @@ const Login = () => {
     countRef.current = captchaTime;  
   });
   const handleSubmit = async (values: any) => {
-    history.push('/union/join');
-    // try {
-    //   // 登录
-    //   const msg = await login({ ...values, type });
-    //   if (msg.status === 'ok') {
-    //     const defaultLoginSuccessMessage = '登录成功！';
-    //     message.success(defaultLoginSuccessMessage);
-    //     await fetchUserInfo();
-    //     /** 此方法会跳转到 redirect 参数所在的位置 */
-    //     if (!history) return;
-    //     const { query } = history.location;
-    //     const { redirect } = query as any;
-    //     history.push(redirect || '/');
-    //     return;
-    //   }
-    //   console.log(msg);
-    //   // 如果失败去设置用户错误信息
-    //   setUserLoginState(msg);
-    // } catch (error) {
-    //   const defaultLoginFailureMessage = '登录失败，请重试！';
-    //   message.error(defaultLoginFailureMessage);
-    // }
+    try {
+      let msg = null
+      // 手机注册登录
+      if (isNew && type === 'mobile') {
+        msg = await goRegister({ ...values, isCheckCode: true });
+      } else if (type === 'mobile') { // 手机登录
+        msg = await goLogin({ ...values, isCheckCode: true });
+      } else if (type === 'account') {
+        msg = await goLogin({ ...values, isCheckCode: false });
+      } // 密码登录
+      if (msg.data) {
+        const defaultLoginSuccessMessage = '登录成功！';
+        message.success(defaultLoginSuccessMessage);
+        setToken(msg.data.userId)
+        await fetchUserInfo();
+        /** 此方法会跳转到 redirect 参数所在的位置 */
+        if (!history) return;
+        const { query } = history.location;
+        const { redirect } = query as any;
+        history.push(redirect || '/union/join');
+        return;
+      }
+      // 如果失败去设置用户错误信息
+      setUserLoginState(msg);
+    } catch (error) {
+      const defaultLoginFailureMessage = '登录失败，请重试！';
+      message.error(defaultLoginFailureMessage);
+    }
   };
-  const handleGetCaptcha = async (values: any) => {
+  const handleGetCaptcha = async () => {
     setHasCaptcha(true)
     setCaptchaTime(initCaptchaTime)
-    getSms({ mobileNo: form.getFieldValue('mobileNo'), smsScene: isNew ? 1 : 2 })
+    const res = await getSms({ mobileNo: form.getFieldValue('mobileNo'), smsScene: isNew ? 1 : 2 })
+    setCaptchaData(res.data)
     const captchaInterval = setInterval(() => {
       if (countRef.current === 0) {
         clearInterval(intervalRef.current);
@@ -67,6 +77,15 @@ const Login = () => {
     }, 1000);
     intervalRef.current = captchaInterval as any;
   }
+  const validateCaptcha = useCallback((_, value: string) => {
+    if (!value) {
+      return Promise.reject(new Error('请输入验证码!'))
+    }
+    if (value !== captchaData) {
+        return Promise.reject(new Error('验证码不正确!'))
+    }
+    return Promise.resolve()
+  }, [captchaData])
   const handleType = (targetType: string) => {
     setType(targetType)
   }
@@ -74,7 +93,7 @@ const Login = () => {
     if (`${value}`.length === 11) {
       // 查电话是否注册
       const flag = await checkPhone({ mobileNo: value})
-      setIsNew(flag)
+      setIsNew(!flag.data)
     }
   }, 800)
   const handleWeixinCodeHover = (targetType: string) => {
@@ -155,7 +174,9 @@ const Login = () => {
                 >
                   <Form.Item
                     name="mobileNo"
-                    rules={[{ required: true, message: '请输入手机号码！' }]}
+                    rules={[
+                      { required: true, validator: validateMobile }
+                    ]}
                   >
                     <InputNumber
                       controls={false}
@@ -169,7 +190,7 @@ const Login = () => {
                       <Form.Item
                         name="captcha"
                         noStyle
-                        rules={[{ required: true, message: '请输入验证码！' }]}
+                        rules={[{ required: true, validator: validateCaptcha }]}
                       >
                         <Input placeholder="输入验证码" />
                       </Form.Item>
@@ -187,8 +208,8 @@ const Login = () => {
                   </Form.Item>
                   }
                   <Form.Item noStyle>
-                    <Button type="primary" htmlType="submit" block>
-                      登录
+                    <Button type="primary" htmlType="submit" block>                    
+                      { isNew ? '注册': '登录'}
                     </Button>
                   </Form.Item>
                 </Form>

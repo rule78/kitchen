@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-const mainApi = '/main-api/main/'
+const mainApi = '/main-api/main'
 
 // 新增员工
 export async function createStaff(
@@ -17,7 +17,7 @@ export async function createStaff(
   }
 
 // 获取省市区乡镇层级树
-export async function updateStaff() {
+export async function getAreaTree() {
     return request<any>(`${mainApi}/store/areaTree`, {
       method: 'GET',
     });
@@ -50,14 +50,14 @@ export async function saveStore(
   }
 
 // 商家员工岗位信息
-export async function getStaffInfo() {
+export async function getStoreStaffPosition() {
     return request<any>(`${mainApi}/store/staff/position`, {
-      method: 'get',
+      method: 'GET',
     });
   }
 
 // 店铺员工新增
-export async function saveStaff(
+export async function saveStoreStaff(
     params: { userId: number; },
 ) {
     return request<any>(`${mainApi}/store/staff/save`, {
@@ -67,3 +67,34 @@ export async function saveStaff(
       },
     });
   }
+
+// 店铺员工更新
+export async function updateStoreStaff(
+  params: { userId: number; },
+) {
+  return request<any>(`${mainApi}/store/staff/update`, {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 店铺员工查看
+export async function getStoreStaffInfo(
+  params: { staffId: number; },
+) {
+  return request<any>(`${mainApi}/store/staff/get`, {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+  });
+}
+
+// 商家员工列表查询
+export async function getStoreStaffList() {
+  return request<any>(`${mainApi}/store/staff/list`, {
+    method: 'GET',
+  });
+}

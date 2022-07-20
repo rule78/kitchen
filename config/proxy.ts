@@ -12,7 +12,12 @@ export default {
     '/main-api/': {
       target: 'http://dve.985cn.com/',
       changeOrigin: true,
-      pathRewrite: { '^': '/main-api/' },
+      pathRewrite: { '^': '' },
+    },
+    '/sys-api/': {
+      target: 'http://dve.985cn.com/',
+      changeOrigin: true,
+      pathRewrite: { '^': '' },
     },
   },
   test: {

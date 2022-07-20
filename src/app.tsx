@@ -5,6 +5,7 @@ import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { PageLoading, SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
+import { getToken } from '@/utils/auth'
 import defaultSettings from '../config/defaultSettings';
 import { currentUser as queryCurrentUser } from '@/services/kitchen/api';
 
@@ -27,7 +28,8 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser();
+      const id = getToken()
+      const msg = await queryCurrentUser({ userId: Number(id) });
       return msg.data;
     } catch (error) {
       history.push(loginPath);
@@ -75,6 +77,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     links: [],
     childrenRender: (children, props) => {
+      console.log(initialState, 'initialState')
       let initSetting = initialState?.settings
       if (location.pathname.includes('union/list')) {
         initSetting = {

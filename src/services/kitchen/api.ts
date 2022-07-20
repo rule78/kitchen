@@ -2,8 +2,8 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-const mainApi = '/main-api/main/'
-const systemApi = '/main-api/system/'
+const mainApi = '/main-api/main'
+const systemApi = '/sys-api/system'
 
 // 部门树
 export async function getDeptTree(
@@ -19,7 +19,7 @@ export async function getDeptTree(
 
 // 注册用户
 export async function goRegister(
-  params: { mobileNo?: number; password: string; },
+  params: { mobileNo?: number; password: string; isCheckCode?: boolean },
 ) {
   return request<any>(`${systemApi}/user/register`, {
     method: 'POST',
@@ -31,7 +31,7 @@ export async function goRegister(
 
 // 账号密码登录
 export async function goLogin(
-  params: { mobileNo: number; password: string; },
+  params: { mobileNo: number; password?: string; isCheckCode?: boolean },
 ) {
   return request<any>(`${systemApi}/user/login`, {
     method: 'POST',
@@ -91,18 +91,27 @@ export async function getUserInfo(userId: number) {
 
 /** 获取当前的用户 GET /api/currentUser */
 // 身份类型 1、商家店铺 2、连锁/合作机构 3、政府机构
-export async function currentUser(options?: { [key: string]: any }) {
-  return {
-    data: {
-      mainName: '测试商铺',
-      secondName: '测试商铺描述',
-      name: '测试账号',
-      identityType: 1,
-      relateId: 999,
-      mobileNo: 15213161818
-    }
-  }
+export async function currentUser(
+  params: { userId: number; },
+) {
+  return request<any>(`${mainApi}/identity/get`, {
+    method: 'GET',
+    headers: {
+      ...params,
+    },
+  });
 }
+  // return {
+  //   data: {
+  //     mainName: '测试商铺',
+  //     secondName: '测试商铺描述',
+  //     name: '测试账号',
+  //     identityType: 1,
+  //     relateId: 999,
+  //     mobileNo: 15213161818
+  //   }
+  // }
+
 
 /** 退出登录接口 POST /api/login/outLogin */
 export async function outLogin(options?: { [key: string]: any }) {
