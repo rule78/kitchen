@@ -1,4 +1,4 @@
-import { outLogin } from '@/services/ant-design-pro/api';
+import { outLogin } from '@/services/kitchen/api';
 import { Spin } from 'antd';
 import { stringify } from 'querystring';
 import type { MenuInfo } from 'rc-menu/lib/interface';

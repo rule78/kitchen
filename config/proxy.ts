@@ -9,10 +9,10 @@
 export default {
   dev: {
     // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
-    '/mock/': {
-      target: 'http://120.76.134.93:3000',
+    '/main-api/': {
+      target: 'http://dve.985cn.com/',
       changeOrigin: true,
-      pathRewrite: { '^': '/mock/' },
+      pathRewrite: { '^': '/main-api/' },
     },
   },
   test: {

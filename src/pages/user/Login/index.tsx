@@ -1,4 +1,4 @@
-import { login, checkPhone, getSms } from '@/services/ant-design-pro/api';
+import { login, checkPhone, getSms } from '@/services/kitchen/api';
 import { Alert, message, Tabs, Form, Input, Button, InputNumber, Radio } from 'antd';
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { history, useModel } from 'umi';

@@ -2,11 +2,26 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-// 注册
+const mainApi = '/main-api/main/'
+const systemApi = '/main-api/system/'
+
+// 部门树
+export async function getDeptTree(
+  params: { userId: number; },
+) {
+  return request<any>(`${systemApi}/department/deptTree`, {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+  });
+}
+
+// 注册用户
 export async function goRegister(
   params: { mobileNo?: number; password: string; },
 ) {
-  return request<any>('/mock/18/system/user/register', {
+  return request<any>(`${systemApi}/user/register`, {
     method: 'POST',
     data: {
       ...params,
@@ -18,7 +33,7 @@ export async function goRegister(
 export async function goLogin(
   params: { mobileNo: number; password: string; },
 ) {
-  return request<any>('/mock/18/system/user/login', {
+  return request<any>(`${systemApi}/user/login`, {
     method: 'POST',
     data: {
       ...params,
@@ -30,7 +45,7 @@ export async function goLogin(
 export async function updatePassword(
   params: { mobileNo: number; password: string; },
 ) {
-  return request<any>('/mock/18/system/user/updatePassword', {
+  return request<any>(`${systemApi}/user/updatePassword`, {
     method: 'POST',
     data: {
       ...params,
@@ -42,7 +57,7 @@ export async function updatePassword(
 export async function checkPhone(
   params: { mobileNo?: number; },
 ) {
-  return request<any>('/mock/18/system/user/existUser', {
+  return request<any>(`${systemApi}/user/existUser`, {
     method: 'GET',
     params: {
       ...params,
@@ -56,7 +71,7 @@ type smsSceneType = 1 | 2
 export async function getSms(
   params: { mobileNo: number; smsScene: smsSceneType },
 ) {
-  return request<any>('/mock/18/system/user/sendSms', {
+  return request<any>(`${systemApi}/user/sendSms`, {
     method: 'GET',
     params: {
       ...params,

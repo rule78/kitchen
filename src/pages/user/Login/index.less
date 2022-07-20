@@ -176,64 +176,79 @@
         line-height: 20px;
         cursor: pointer;
       }
-      :global(.ant-form-item){
-        margin-bottom: 40px;
-      }
-      // :global(.ant-input-number-focused){
-      //   border: 1px solid #2087FF;
-      // }
-      // :global(.ant-input-number-focused:hover){
-      //   background: #0F1739;
-      // }
-      :global(.ant-input-number-status-error){
-        border: 1px solid #F92E2E !important;
-      }
-      :global(.ant-input-wrapper){
-        border-radius: 6px;
-        line-height: 50px;
-        background: #0F1739;
-      }
-      // :global(.ant-input) {
-      //   line-height: 38px;
-      //   border: 1px solid @2087FF30;
-      //   border-radius: 6px;
-      //   background: #0F1739;
-      // }
-      // :global(.ant-input:hover){
-      //   background: #0F1739;
-      // }
-      // :global(.ant-input-number:hover){
-      //   background: #0F1739;
-      // }
-      :global(.ant-input-focused){
-        border: 1px solid #2087FF;
-      }
-      :global(.ant-input-affix-wrapper) {
-        border: 1px solid @2087FF30;
-        background: #0F1739;
-        border-radius: 6px;
-        line-height: 38px;
-      }
-      :global(.ant-input-affix-wrapper:hover) {
-        background: #0F1739;
-      }
-      :global(.ant-input-affix-wrapper-focused) {
-        border: 1px solid #2087FF;
-      }
-      :global(.ant-input-status-error) {
-        border: 1px solid #ff4d4f;
-      }
-      :global(.ant-input-affix-wrapper-status-error) {
-        border: 1px solid #ff4d4f;
-      }
-      :global(.ant-input-affix-wrapper, .ant-input) {
-        border: none !important;
-      }
-      :global(.ant-form-item-explain) {
-        position: absolute;
-        bottom: -28px;
-        left: 0;
-        width: 100%;
+      :global{
+        .ant-input-number{
+          border-radius: 6px;
+          border: 1px solid @2087FF30;
+          line-height: 50px;
+          background: #0F1739 !important;
+          &:hover{
+            border: 1px solid #2087FF !important;
+            background: #0F1739 !important;
+          }
+        }
+        .ant-input {
+          color: #fff;
+          line-height: 38px;
+          border: 1px solid @2087FF30;
+          border-radius: 6px;
+          background: #0F1739 !important;
+          &:hover{
+            background: #0F1739 !important;
+          }
+        }
+        .ant-input-focused {
+          border: 1px solid #2087FF;
+        }
+        .ant-input-affix-wrapper {
+          border: 1px solid @2087FF30;
+          background: #0F1739;
+          border-radius: 6px;
+          line-height: 38px;
+          &:hover{
+            background: #0F1739 !important;
+          }
+        }
+        .ant-form-item-label > label{
+          margin-right: 10px;
+          height: 48px;
+          color: #fff;
+        }
+        .ant-form-item{
+          margin-bottom: 40px;
+        }
+        .ant-input-number-focused{
+          border: 1px solid #2087FF;
+        }
+        .ant-input-number-focused:hover{
+          background: #0F1739;
+        }
+        .ant-input-number-status-error{
+          border: 1px solid #F92E2E !important;
+        }
+        .ant-input-wrapper{
+          border-radius: 6px;
+          line-height: 50px;
+          background: #0F1739;
+        }
+        .ant-input-affix-wrapper-focused {
+          border: 1px solid #2087FF;
+        }
+        .ant-input-status-error {
+          border: 1px solid #ff4d4f;
+        }
+        .ant-input-affix-wrapper-status-error {
+          border: 1px solid #ff4d4f;
+        }
+        .ant-input-affix-wrapper, .ant-input {
+          border: none !important;
+        }
+        .ant-form-item-explain {
+          position: absolute;
+          bottom: -28px;
+          left: 0;
+          width: 100%;
+        }
       }
     }
     .weixinBox{
@@ -412,12 +427,6 @@
     height: 23.6vw;
     width: 42.7vw;
   }
-  // .container {
-  //   background-image: url('../../../assets/images/插图.png');
-  //   background-repeat: no-repeat;
-  //   background-position: 20% 60%;
-  //   background-size: 45%;
-  // }
   .content {
     padding: 32px 0 24px;
   }

@@ -4,7 +4,7 @@ import {
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useState, useMemo } from 'react';
 import { uploadApi } from '@/dictionary'
-import { getAreaTree } from '@/services/ant-design-pro/api';
+import { getAreaTree } from '@/services/kitchen/api';
 import Header from '@/components/Header'
 import Diveder from '@/components/Y/Divider'
 import Tags from '@/components/Y/Tags'
@@ -24,15 +24,15 @@ const formItemLayout = {
 const DPicker: any = DatePicker
 const steps = [
   {
-    title: 'First',
+    title: '商铺简介',
     type: 'introduce',
   },
   {
-    title: 'Second',
+    title: '商铺资质',
     type: 'intelligence',
   },
   {
-    title: 'Last',
+    title: '签订入驻协议',
     type: 'agreement',
   },
 ];

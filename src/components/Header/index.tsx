@@ -7,7 +7,7 @@ import {
   import { Image, Spin } from 'antd';
   import HomeLogo from '@/assets/images/logo.png'
   import { stringify } from 'querystring';
-  import { outLogin } from '@/services/ant-design-pro/api';
+  import { outLogin } from '@/services/kitchen/api';
   import { history, useModel } from 'umi';
   import styles from './index.less';
   

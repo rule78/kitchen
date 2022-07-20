@@ -5,6 +5,8 @@ import shopPng from '@/assets/images/shop.png'
 
 export const uploadApi = 'https://www.mocky.io/v2/5cc8019d300000980a055e76'
 
+// http://dve.985cn.com/main-api/system/tool/oss/upload
+
 export const unionList = [
   {
     title: '商家店铺',

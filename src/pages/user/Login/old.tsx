@@ -1,6 +1,6 @@
 import Footer from '@/components/Footer';
-import { login } from '@/services/ant-design-pro/api';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+import { login } from '@/services/kitchen/api';
+import { getFakeCaptcha } from '@/services/kitchen/login';
 import {
   AlipayCircleOutlined,
   LockOutlined,

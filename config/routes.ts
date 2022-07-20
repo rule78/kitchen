@@ -1,5 +1,10 @@
 ﻿export default [
   {
+    path: '/',
+    layout: false,
+    component: './user/Login',
+  },
+  {
     path: '/user',
     layout: false,
     routes: [
@@ -7,9 +12,6 @@
         name: 'login',
         path: '/user/login',
         component: './user/Login',
-      },
-      {
-        component: './404',
       },
     ],
   },
@@ -57,10 +59,6 @@
     layout: false,
     path: '/union/list',
     component: './Union/list',
-  },
-  {
-    path: '/',
-    redirect: '/user/login',
   },
   {
     component: './404',

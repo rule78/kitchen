@@ -6,9 +6,8 @@ import { PageLoading, SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
 import defaultSettings from '../config/defaultSettings';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+import { currentUser as queryCurrentUser } from '@/services/kitchen/api';
 
-const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 const defaultHomeLogo = 'https://lhcdn.lanhuapp.com/web/imgs/download-xd125adfb8.svg'
 
@@ -55,7 +54,6 @@ export async function getInitialState(): Promise<{
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
-  console.log(initialState?.settings, 'initialState?.settings')
   return {
     rightContentRender: () => <RightContent />,
     logo: () => <LeftContent />,
@@ -70,7 +68,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
+      if (!initialState?.currentUser && location.pathname.includes(loginPath)) {
+        console.log('toLogin')
         history.push(loginPath);
       }
     },
