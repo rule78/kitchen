@@ -1,49 +1,47 @@
 import {
-    useCallback,
-    useMemo,
-    useRef,
-    useEffect
+    useCallback, useEffect
   } from 'react';
-  import { Image, Spin } from 'antd';
+  import { Image, Spin, Popover } from 'antd';
   import HomeLogo from '@/assets/images/logo.png'
-  import { stringify } from 'querystring';
-  import { outLogin } from '@/services/kitchen/api';
   import { history, useModel } from 'umi';
+  import { delCookie } from '@/utils/auth'
   import styles from './index.less';
-  
+
+  type CardItemProps = {
+    name: string;
+    logo?: string;
+    identityType: number;
+    relateId: number
+  };
   const loginPath = '/user/login';
   /**
  * 退出登录，并且将当前的 url 保存
  */
 const loginOut = async () => {
-    await outLogin();
-    const { query = {}, search, pathname } = history.location;
-    const { redirect } = query;
-    // Note: There may be security issues, please note
-    if (!history.location.pathname.includes(loginPath) && !redirect) {
-      history.replace({
-        pathname: loginPath,
-        search: stringify({
-          redirect: pathname + search,
-        }),
-      });
-    }
-  };
+  delCookie()
+  history.push(loginPath);
+};
 
   const Header = () => {
     const { initialState, setInitialState } = useModel('@@initialState');
-    const onMenuClick = useCallback(
-        (event: any) => {
-          const { key } = event;
-          if (key === 'logout') {
-            setInitialState((s) => ({ ...s, currentUser: undefined }));
-            loginOut();
-            return;
-          }
-          history.push(`/account/${key}`);
-        },
-        [setInitialState],
-      );
+    const onMenuClick = useCallback(() => {
+      setInitialState((s) => ({ ...s, currentUser: undefined }));
+      loginOut();
+      return;
+    }, [setInitialState]);
+    const toApply = () => {
+      history.push('/union/join');
+    }
+    const toHome = () => {
+      history.push('/union/index');
+    }
+    const toList = (params: CardItemProps) => {
+      const { identityType, relateId, name } = params
+      history.replace({
+        pathname: '/union/list',
+        query: { identityType, relateId, name }
+      });
+    }
     const loading = (
         <span className={`${styles.action} ${styles.account}`}>
           <Spin
@@ -59,38 +57,73 @@ const loginOut = async () => {
         return loading;
     }
     const { currentUser } = initialState as any;
-    if (!currentUser || !currentUser.name) {
-      return loading;
+    const { name: mainName, relateId } = history.location.query as any
+    const isHome = history.location.pathname.includes('union/index') || history.location.pathname === "/"
+    const isList = history.location.pathname.includes('union/list')
+    const popContent = () => {
+      return <>{
+        currentUser?.unionList?.map((i: any) => {
+          return <div
+            key={i.relateId} onClick={() => toList(i)}
+            className={styles.popBtn}
+          >{i.name}</div>
+        })
+      }
+      </>
     }
-    const isHome = history.location.pathname.includes('union/index')
+    const getHomeLogo = useCallback(() => {
+      if (isList) {
+        const item = currentUser?.unionList?.find((i: any) => i.relateId === relateId)
+        return item ? item.logo : HomeLogo
+      }
+      return HomeLogo
+    }, [currentUser, relateId])
     return (
       <div className={styles.header}>
-        <div className={styles.leftContent}>
+        <div className={styles.leftContent} onClick={toHome}>
           <Image
             width={90}
             height={90}
             preview={false}
             className={styles.companyLogo}
-            src={HomeLogo}
+            src={getHomeLogo()}
             fallback={HomeLogo}
-            />
+          />
           <div className={styles.nameBox}>
-            <div className={styles.mainName}>{currentUser.mainName}</div>
-            <div className={styles.secondName}>{currentUser.secondName}</div>
+            {
+              isList && (<>
+              <div className={styles.mainName}>{isList ? mainName: '食上安全云平台'}</div>
+              <div className={styles.secondName}>{ isList && '智慧餐饮.食上云平台' }</div>
+              </>
+              )
+            }
+            {
+              !isList && <div className={styles.oneMainName}>{'食上安全云平台'}</div>
+            }
           </div>
         </div>
         <div className={styles.rightContent}>
-          <div className={styles.logoBox}>
-            <div className={styles.text}>店铺管理</div>
-            <div className={styles.homeBox}></div>
-          </div>
+          {
+            currentUser?.unionList?.length > 0 && <Popover placement="bottomRight" title={null} content={popContent} trigger="click">
+              <div className={styles.logoBox}>
+                <div className={styles.text}>店铺管理</div>
+                <div className={styles.homeBox}></div>
+              </div>
+            </Popover>
+          }
+          {
+            currentUser?.unionList?.length === 0 &&  <div className={styles.logoBox} onClick={toHome}>
+              <div className={styles.text}>店铺管理</div>
+              <div className={styles.homeBox}></div>
+            </div>
+          }
           <div className={styles.infoBox}>
             {
               isHome && (<div className={styles.nameBox} style={{ marginRight: 0 }}>
-                <div className={styles.text}>申请入驻</div>
+                <div onClick={toApply} className={styles.text}>申请入驻</div>
               </div>)
             }
-            <div className={styles.nameBox}><div className={styles.text}>{currentUser.name}</div></div>
+            <div className={styles.nameBox}><div className={styles.text}>{currentUser.mobileNo}</div></div>
             <div className={styles.leaveBtn} onClick={onMenuClick}>退出</div>
           </div>
         </div>

@@ -1,101 +1,136 @@
 import type { DataNode, TreeProps } from 'antd/lib/tree';
-import { Tree, Input, Space } from 'antd'
-import {
-  CheckOutlined,
-} from '@ant-design/icons';
+import { Tree, Modal, Form, Input, message } from 'antd'
+import { saveDepartment, updateDepartment } from '@/services/kitchen/api'
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { history } from 'umi';
 import styles from './index.less';
 import { isArray } from 'lodash';
 
-const initData: DataNode[] = [
-  {
-    title: '食区',
-    key: '0-0',
-    children: [
-      {
-        title: '食区01',
-        key: '0-0-0',
-        children: [
-          {
-            title: 'leaf',
-            key: '0-0-0-0',
-          },
-        ],
-      },
-      {
-        title: '食区02',
-        key: '0-0-1',
-        children: [{ title: '豫菜', key: '0-0-1-0' }],
-      },
-    ],
-  },
-];
-const drawer: React.FC = () => {
-  const [activeList, setActiveList] = useState<Array<any>>([])
+const drawer: React.FC = ({ options, getDeptData, getStaffList }: any) => {
+  const [activeList, setActiveList] = useState<any>('')
   const [treeData, setTreeData] = useState<Array<any>>([])
-  const inputRef = useRef(null);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+  const [item, setIem] = useState<any>({})
+  const [type, setType] = useState<string>('add')
+  const { name: mainName, identityType, relateId } = history.location.query as any
+  const [form] = Form.useForm();
   useEffect(() => {
-    setTreeData(initData)
-  }, [])
+    setTreeData(options || [])
+  }, [options])
   const onSelect: TreeProps['onSelect'] = (selectedKeys) => {
     if (isArray(selectedKeys) && selectedKeys.length === 0) {
       console.log(selectedKeys)
     } else {
-      setActiveList(selectedKeys)
+      setIem(findNode(options, selectedKeys[0]))
+      setActiveList(selectedKeys[0])
+      getStaffList({ deptId: selectedKeys[0] })
     }
   };
-  const onExpand = () => {}
-  const changeThree = () => {
-    const { input } = inputRef.current as any
-    console.log(input?.value);
-    setActiveList([])
-  }
-  const TreeEleData = useMemo(() => {
-    const formatTree = () => {
-      function formatTreeItem(data: any) {
-        let result = [] as any
-        data.map((item: any) => {
-          let target: any = { key: item.key }
-          if (activeList.includes(item.key)) {
-            target.title = (<Space>
-              <Input
-                ref={inputRef}
-                defaultValue={item.title}
-              />
-              <div className={styles.comfirmBox} onClick={changeThree}>
-                <CheckOutlined />
-              </div>
-            </Space>)
-          } else {
-            target.title = <div className={styles.title}>{ item.title }</div>
-          }
-          if (item.children) {
-            target.children = formatTreeItem(item.children);
-          }
-          result.push(target)
-        });
-        return result
+  const findNode = (target: any, id) => {
+    const loop = (data: any, key: any, callback: any) => {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].id == key) {
+          return callback(data[i], i, data)
+        }
+        if (data[i].childList) {
+          loop(data[i].childList, key, callback)
+        }
       }
-      return formatTreeItem(treeData)
     }
-    return formatTree()
-  }, [treeData, activeList])
+    let Obj
+    loop(target, id, (item, index, arr) => { Obj = item })
+    return Obj
+  }
+  const onExpand = () => {}
+  const toEdit = () => {
+    setType('edit')
+    form.setFieldsValue(item)
+    setIsModalVisible(true)
+  }
+  const toAdd = () => {
+    setType('add')
+    form.setFieldsValue({
+      ...item,
+      deptName: ''
+    })
+    setIsModalVisible(true)
+  }
+  const handleOk = async() => {
+    try {
+      const values = await form.validateFields();
+      if (values) {
+        const { childList, ...target } = item
+        if (type === 'add') {
+          const { deptId, ...rest } = target
+          const res = await saveDepartment({
+            ...rest,
+            ...values,
+            parentId: rest.parentId || 0,
+            level: rest.level || 1,
+            identityType,
+            relateId
+          })
+          if (res.message === "success") {
+            message.success('新增成功')
+            getDeptData()
+            setIsModalVisible(false)
+          }
+        } else {
+          const res = await updateDepartment({
+            ...target,
+            ...values,
+            deptId: target.id,
+            identityType,
+            relateId
+          })
+          if (res.message === "success") {
+            message.success('编辑成功')
+            getDeptData()
+            setIsModalVisible(false)
+          }
+        }
+      }
+    } catch (errorInfo) {
+      console.log('Failed:', errorInfo);
+      return
+    }
+  }
+  const handleCancel = () => {
+    setIsModalVisible(false)
+  }
   return (
     <div className={styles.drawer}>
       <div className={styles.header}>
-        <div className={styles.title}>福建商学院马尾校区食堂</div>
+        <div className={styles.title}>{mainName}</div>
         <div className={styles.btnList}>
-          <div className={styles.edit}></div>
-          <div className={styles.add}></div>
+          <div className={styles.edit} onClick={toEdit}></div>
+          <div className={styles.add} onClick={toAdd}></div>
         </div>
       </div>
       <div className={styles.content}>
         <Tree
-         onExpand={onExpand}
+          onExpand={onExpand}
+          fieldNames={{
+            title: 'deptName',
+            key: 'id',
+            children: 'childList',
+          }}
           onSelect={onSelect}
-          treeData={TreeEleData}
+          treeData={treeData}
         />
       </div>
+      <Modal
+        title={type === 'add' ? '添加下级部门' : '编辑部门'}
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+          <Form form={form} name="normal_login" initialValues={item}>
+            <Form.Item name="deptName" rules={[{ required: true, message: '请输入部门名称' }]}>
+              <Input />
+            </Form.Item>
+          </Form>
+      </Modal>
     </div>
   );
 };

@@ -37,7 +37,7 @@
           .addBtn{
             padding: 7px 24px 6px 24px;
             background: #2087FF;
-            border-radius: 6px;
+            border-radius: 4px;
             color: #FFFFFF;
             cursor: pointer;
           }
@@ -51,8 +51,31 @@
 }
 .formBox{
   padding: 0 36px 10px 16px;
+  max-height: 70vh;
+  overflow-y: scroll;
+  .text{
+    line-height: 50px;
+    color: @fff70;
+  }
 }
 :global{
+  .ant-form-item-extra{
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: @fff30;
+    line-height: 20px;
+  }
+  .ant-table-cell{
+    background: #091234;
+    color: @fff70;
+  }
+  .ant-empty-description{
+    color: @fff70;
+  }
+  .ant-table-cell-row-hover{
+    background: #0D173B !important;
+  }
   .ant-input-number{
     border-radius: 6px;
     border: 1px solid @2087FF30;
@@ -63,7 +86,6 @@
       background: #0F1739 !important;
     }
   }
-
   .ant-input {
     color: #fff;
     line-height: 38px;
@@ -100,13 +122,33 @@
     }
   }
 }
-:global(.ant-modal-header) {
-  background: #001833;
+:global {
+  .ant-modal-header{
+    background: #001833;
+  }
+  .ant-upload.ant-upload-select-picture-card > .ant-upload{
+    background-color: #050B2C;
+    color: @fff70;
+    border: 1px solid #002f66;
+  }
+  .ant-upload.ant-upload-select-picture-card{
+    border: 1px solid #002f66;
+  }
+  .ant-upload-list-item{
+    border: 1px solid #002f66;
+  }
+  .ant-input[disabled]{
+    color: @fff70;
+  }
+  .ant-picker-input > input[disabled]{
+    color: @fff70;
+  }
 }
 :global(.ant-modal-title) {
   font-size: 20px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
+  
   color: #FFFFFF;
   line-height: 28px;
 }
@@ -121,10 +163,14 @@
   margin: 0 auto;
   padding: 13px 73px 12px 73px;
   background: #2087FF;
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 18px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #FFFFFF;
   line-height: 25px;
+  cursor: pointer;
+  &:hover{
+    background: #1972d8;
+  }
 }

@@ -2,7 +2,7 @@
   {
     path: '/',
     layout: false,
-    component: './user/Login',
+    component: './Union/index.tsx',
   },
   {
     path: '/user',

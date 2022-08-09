@@ -1,18 +1,23 @@
 // @ts-ignore
 /* eslint-disable */
 import { request } from 'umi';
-
+import { getToken } from '@/utils/auth'
 const mainApi = '/main-api/main'
 const systemApi = '/sys-api/system'
 
+// 
+export const uploadApi = `${systemApi}/tool/oss/upload`
 // 部门树
 export async function getDeptTree(
-  params: { userId: number; },
+  params: { identityType: string; relateId: string; },
 ) {
   return request<any>(`${systemApi}/department/deptTree`, {
     method: 'GET',
     params: {
       ...params,
+    },
+    headers: {
+      'userId': getToken(),
     },
   });
 }
@@ -22,6 +27,30 @@ export async function goRegister(
   params: { mobileNo?: number; password: string; isCheckCode?: boolean },
 ) {
   return request<any>(`${systemApi}/user/register`, {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 新增部门
+export async function saveDepartment(
+  params: any,
+) {
+  return request<any>(`${systemApi}/department/save`, {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 新增部门
+export async function updateDepartment(
+  params: any,
+) {
+  return request<any>(`${systemApi}/department/update`, {
     method: 'POST',
     data: {
       ...params,
@@ -79,39 +108,16 @@ export async function getSms(
   });
 }
 
-// 获取用户身份信息
-export async function getUserInfo(userId: number) {
-  return request<any>('/mock/18/identity/get', {
-    method: 'GET',
-    head: {
-      'userId': userId,
-      },
-  });
-}
-
 /** 获取当前的用户 GET /api/currentUser */
 // 身份类型 1、商家店铺 2、连锁/合作机构 3、政府机构
-export async function currentUser(
-  params: { userId: number; },
-) {
+export async function currentUser() {
   return request<any>(`${mainApi}/identity/get`, {
     method: 'GET',
     headers: {
-      ...params,
+      'userId': getToken(),
     },
   });
 }
-  // return {
-  //   data: {
-  //     mainName: '测试商铺',
-  //     secondName: '测试商铺描述',
-  //     name: '测试账号',
-  //     identityType: 1,
-  //     relateId: 999,
-  //     mobileNo: 15213161818
-  //   }
-  // }
-
 
 /** 退出登录接口 POST /api/login/outLogin */
 export async function outLogin(options?: { [key: string]: any }) {
@@ -150,10 +156,23 @@ export async function rule(
   });
 }
 
-
-// 获取省市区乡镇层级树
-export async function getAreaTree() {
-  return request<any>('/mock/18/main/store/areaTree', {
-    method: 'GET',
-  });
+// 
+export  function uploadFile(params: any) {
+  const { onSuccess } = params
+  const formData = new FormData()
+  formData.append('file', params.file)
+  request<API.RuleList>(`${systemApi}/tool/oss/upload`, {
+    method: 'POST',
+    requestType: 'form',
+    data: formData
+  }).then((res: any) => {
+    setTimeout(() => {
+      onSuccess({
+        uid: '-1',
+        name: 'image.png',
+        status: 'done',
+        url: res.data
+      }); 
+    })
+  })
 }

@@ -180,6 +180,37 @@
         }
       }
     }
+    .agreementBox{
+      padding: 20px;
+      border-radius: 5px;
+      border: 1px solid #003777;
+      height: 400px;
+      overflow-y: scroll;
+    }
+  }
+  .agreeBox{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: @fff70;
+    margin-top: 8px;
+  }
+  .RadioBox{
+    position: relative;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #2087FF;
+    border-radius: 50%;
+    margin-right: 8px;
+    .Radio{
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      background-color: #69aefd;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
   }
   :global{
     .ant-input-number{
@@ -382,6 +413,20 @@
     }
     .ant-select-selection-item{
       color: #fff;
+    }
+    .ant-select-selection-item-content{
+      color: #000;
+    }
+    .ant-upload.ant-upload-select-picture-card > .ant-upload{
+      background-color: #050B2C;
+      color: @fff70;
+      border: 1px solid #002f66;
+    }
+    .ant-upload.ant-upload-select-picture-card{
+      border: 1px solid #002f66;
+    }
+    .ant-upload-list-item{
+      border: 1px solid #002f66;
     }
   }
 }

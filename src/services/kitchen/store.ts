@@ -1,6 +1,7 @@
 // @ts-ignore
 /* eslint-disable */
 import { request } from 'umi';
+import { getToken } from '@/utils/auth'
 
 const mainApi = '/main-api/main'
 
@@ -43,6 +44,9 @@ export async function saveStore(
 ) {
     return request<any>(`${mainApi}/store/save`, {
       method: 'POST',
+      headers: {
+        'userId': getToken(),
+      },
       data: {
         ...params,
       },
@@ -58,22 +62,28 @@ export async function getStoreStaffPosition() {
 
 // 店铺员工新增
 export async function saveStoreStaff(
-    params: { userId: number; },
+  params: any,
 ) {
     return request<any>(`${mainApi}/store/staff/save`, {
       method: 'POST',
       data: {
         ...params,
       },
+      headers: {
+        'userId': getToken(),
+      },
     });
   }
 
 // 店铺员工更新
 export async function updateStoreStaff(
-  params: { userId: number; },
+  params: any,
 ) {
   return request<any>(`${mainApi}/store/staff/update`, {
     method: 'POST',
+    headers: {
+      'userId': getToken(),
+    },
     data: {
       ...params,
     },
@@ -93,8 +103,13 @@ export async function getStoreStaffInfo(
 }
 
 // 商家员工列表查询
-export async function getStoreStaffList() {
+export async function getStoreStaffList(
+  params: { institutionId?: string; deptId?: string; pageNum: number; pageSize: number },
+) {
   return request<any>(`${mainApi}/store/staff/list`, {
-    method: 'GET',
+    method: 'POST',
+    data: {
+      ...params,
+    },
   });
 }

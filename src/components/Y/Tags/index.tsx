@@ -85,16 +85,16 @@ const Tags: React.FC = ({ onChange, value }: any) => {
           <Tag
             className="edit-tag"
             key={tag}
-            closable={index !== 0}
+            closable={true}
             onClose={() => handleClose(tag)}
           >
             <span
               onDoubleClick={(e) => {
-                if (index !== 0) {
+                // if (index !== 0) {
                   setEditInputIndex(index);
                   setEditInputValue(tag);
                   e.preventDefault();
-                }
+                // }
               }}
             >
               {isLongTag ? `${tag.slice(0, 20)}...` : tag}
@@ -116,6 +116,7 @@ const Tags: React.FC = ({ onChange, value }: any) => {
           size="small"
           className="tag-input"
           value={inputValue}
+          maxLength={8}
           onChange={handleInputChange}
           onBlur={handleInputConfirm}
           onPressEnter={handleInputConfirm}

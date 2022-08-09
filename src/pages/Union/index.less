@@ -1,19 +1,111 @@
-.home{
-  .content{
+@import (reference) '~antd/es/style/themes/index';
+
+@fff50: #8c8c8c;
+@fff30: #4d4d4d;
+@fff70: #FFFEFE;
+@2087FF30: #004799;
+
+.home {
+  .content {
     position: relative;
     width: 100%;
     height: calc(100vh - 182px);
-    background: #000524;
     overflow: hidden;
-    .mainImg{
+    background: #000524;
+    .mainImg {
       position: absolute;
       top: 15vh;
       right: 29vw;
-      height: 23.6vw;
       width: 42.7vw;
+      height: 23.6vw;
       background-image: url('../../assets/images/home_content.png');
       background-repeat: no-repeat;
       background-size: 100%;
+    }
+  }
+  .loginContainer {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 182px);
+    padding-top: 40px;
+    overflow-y: scroll;
+    background: #000524;
+    .cardBox {
+      width: 1200px;
+      margin: 0 auto 40px auto;
+      color: #fff;
+      .headerBox {
+        display: flex;
+        align-items: flex-end;
+        padding: 20px;
+        background: #071741;
+        border-radius: 6px 6px 0px 0px;
+        .icon {
+          width: 30px;
+          height: 30px;
+          margin-right: 10px;
+        }
+        .title {
+          margin-right: 6px;
+          color: #ffffff;
+          font-weight: 500;
+          font-size: 18px;
+          font-family: PingFangSC-Medium, PingFang SC;
+          line-height: 25px;
+        }
+        .desc {
+          margin-right: 6px;
+          color: @fff70;
+          font-weight: 400;
+          font-size: 14px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          line-height: 20px;
+        }
+      }
+      .contentBox {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 40px 0 40px 50px;
+        background-color: #070E36;
+        .itemBox {
+          display: flex;
+          margin-right: 40px;
+          margin-bottom: 20px;
+          padding: 10px 10px 10px 20px;
+          background: #071741;
+          border-radius: 6px;
+          cursor: pointer;
+          .desc {
+            width: 170px;
+            margin-right: 20px;
+            padding-top: 10px;
+            .title {
+              margin-bottom: 22px;
+              color: #ffffff;
+              font-weight: 500;
+              font-size: 20px;
+              font-family: PingFangSC-Medium, PingFang SC;
+              line-height: 28px;
+            }
+            .turnRight {
+              width: 20px;
+              height: 20px;
+              background-image: url('../../assets//images/cardRight.png');
+              background-repeat: no-repeat;
+              background-size: 100%;
+            }
+          }
+          .logo {
+            width: 120px;
+            height: 120px;
+            background: #041133;
+            border-radius: 6px;
+          }
+          &:hover {
+            background: #0a2057;
+          }
+        }
+      }
     }
   }
 }

@@ -1,82 +1,75 @@
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { request } from 'umi';
 import { message, Upload } from 'antd';
-import type { UploadChangeParam } from 'antd/es/upload';
-import type { RcFile, UploadFile } from 'antd/es/upload/interface';
-import { uploadApi } from '@/dictionary'
 import { isArray } from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { cloneDeep } from 'lodash'
+import { uploadApi } from '@/services/kitchen/api'
 import styles from './index.less';
 
-type LoadingProps = {
-  first?: boolean;
-  second?: boolean;
-  third?: boolean;
-};
-
-
-const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result as string));
-  reader.readAsDataURL(img);
-};
-
-const beforeUpload = (file: RcFile) => {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
-  }
-  return isJpgOrPng && isLt2M;
+type fileProps = {
+  first?: Array<any>;
+  second?: Array<any>;
+  third?: Array<any>;
 };
 
 const UploadList: React.FC = ({ onChange, value }: any) => {
-  const [loading, setLoading] = useState<LoadingProps>({});
-  const [imagesUrl, setImagesUrl] = useState<Array<string>>(['', '', '']);
+  const [imagesUrl, setImagesUrl] = useState<fileProps>({
+    first: [],
+    second: [],
+    third: [],
+  });
 
   useEffect(() => {
-    if (value && isArray(value)) {
+    if (value) {
       setImagesUrl(value)
     }
   }, [value])
-  const handleChange: any = (info: UploadChangeParam<UploadFile>, type : string) => {
-    if (info.file.status === 'uploading') {
-      setLoading((value) => {
-        return {
-          ...value,
-          [type]: true
-        }
-      });
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj as RcFile, url => {
-        setLoading((value) => {
-          return {
-            ...value,
-            [type]: false
-          }
-        });
+  const uploadFile = (params: any, uploadType: string) => {
+    const formData = new FormData()
+    formData.append('file', params.file)
+    request<API.RuleList>(uploadApi, {
+      method: 'POST',
+      requestType: 'form',
+      data: formData
+    }).then((res) => {
+      setTimeout(() => {
         let list = cloneDeep(imagesUrl)
-        if (type === 'first') {
-          list[0] = url;
-        } else if (type === 'second') {
-          list[1] = url;
-        } else {
-          list[2] = url;
-        }
+        list[uploadType] = [{
+          uid: new Date().getTime(),
+          name: params.file.name,
+          status: 'done',
+          url: res.data
+        }];
         onChange(list)
-      });
+      })
+    })
+  }
+  const beforeUpload = (file: any) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('只能上传 JPG/PNG 格式图片!');
     }
+    const isLt2M = file.size / 1024 / 1024 < 30;
+    if (!isLt2M) {
+      message.error('上传图片需要小于 30MB!')
+    }
+    return isJpgOrPng && isLt2M;
   };
+  const onRemove = (params: any, uploadType: string) => {
+    const { uid } = params
+    const target = imagesUrl[uploadType].filter((i: any) => {
+      return i.uid !== uid
+    })
+    onChange({
+      ...imagesUrl,
+      [uploadType]: target
+    })
+  }
   const UploadButton: any = ({ type }: any) => {
     return (
       <div>
-        {loading[type] ? <LoadingOutlined /> : <PlusOutlined />}
+        <PlusOutlined />
         <div style={{ marginTop: 8 }}>上传图片</div>
       </div>
     );
@@ -85,46 +78,43 @@ const UploadList: React.FC = ({ onChange, value }: any) => {
     <div className={styles.uploadList}>
       <div>
         <Upload
-          name="avatar"
           listType="picture-card"
           className="avatar-uploader"
-          showUploadList={false}
           maxCount={1}
-          action={uploadApi}
+          fileList={imagesUrl?.first}
           beforeUpload={beforeUpload}
-          onChange={(info) => handleChange(info, 'first')}
+          customRequest={(params) => uploadFile(params, 'first')}
+          onRemove={(params) => onRemove(params, 'first')}
         >
-          {imagesUrl[0] ? <img src={imagesUrl[0]} alt="avatar" style={{ width: '100%' }} /> : <UploadButton type="first" />}
+          {imagesUrl?.first?.length >= 1 ? null : <UploadButton type="first" />}
         </Upload>
         <div className={styles.title}>门头</div>
       </div>
       <div>
         <Upload
-          name="avatar"
-          listType="picture-card"
-          className="avatar-uploader"
-          showUploadList={false}
-          maxCount={1}
-          action={uploadApi}
-          beforeUpload={beforeUpload}
-          onChange={(info) => handleChange(info, 'second')}
+             listType="picture-card"
+             className="avatar-uploader"
+             maxCount={1}
+             fileList={imagesUrl?.second}
+             beforeUpload={beforeUpload}
+             customRequest={(params) => uploadFile(params, 'second')}
+             onRemove={(params) => onRemove(params, 'second')}
         >
-          {imagesUrl[1] ? <img src={imagesUrl[1]} alt="avatar" style={{ width: '100%' }} /> : <UploadButton type="second" />}
+           {imagesUrl?.second?.length >= 1 ? null : <UploadButton type="second" />}
         </Upload>
         <div className={styles.title}>食堂</div>
       </div>
       <div>
         <Upload
-          name="avatar"
           listType="picture-card"
           className="avatar-uploader"
-          showUploadList={false}
           maxCount={1}
-          action={uploadApi}
+          fileList={imagesUrl?.third}
           beforeUpload={beforeUpload}
-          onChange={(info) => handleChange(info, 'third')}
+          customRequest={(params) => uploadFile(params, 'third')}
+          onRemove={(params) => onRemove(params, 'third')}
         >
-          {imagesUrl[2] ? <img src={imagesUrl[2]} alt="avatar" style={{ width: '100%' }} /> : <UploadButton type="third" />}
+          {imagesUrl?.third?.length >= 1 ? null : <UploadButton type="third" />}
         </Upload>
         <div className={styles.title}>后厨</div>
       </div>

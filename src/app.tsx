@@ -5,7 +5,7 @@ import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { PageLoading, SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
-import { getToken } from '@/utils/auth'
+import { getToken, getMobileNo } from '@/utils/auth'
 import defaultSettings from '../config/defaultSettings';
 import { currentUser as queryCurrentUser } from '@/services/kitchen/api';
 
@@ -30,7 +30,15 @@ export async function getInitialState(): Promise<{
     try {
       const id = getToken()
       const msg = await queryCurrentUser({ userId: Number(id) });
-      return msg.data;
+      if (msg.data) {
+        return {
+          unionList: msg.data,
+          mobileNo: getMobileNo(),
+          homeLogo: defaultHomeLogo,
+        };
+      } else {
+        history.push(loginPath);
+      }
     } catch (error) {
       history.push(loginPath);
     }
@@ -41,10 +49,7 @@ export async function getInitialState(): Promise<{
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,
-      currentUser: {
-        ...currentUser,
-        homeLogo: defaultHomeLogo,
-      },
+      currentUser,
       settings: defaultSettings,
     };
   }
@@ -69,9 +74,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     footerRender: () => '',
     onPageChange: () => {
       const { location } = history;
+      const id = getToken()
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname.includes(loginPath)) {
-        console.log('toLogin')
+      if (!id && location.pathname.includes(loginPath)) {
         history.push(loginPath);
       }
     },

@@ -1,8 +1,9 @@
 const TokenKey = `SKY_CLIENT_TOKEN$`
+const mobileKey = 'mobileNo'
 
-function setCookie(cname: string, cvalue: any){
+function setCookie(cname: string, cvalue: any, day: number = 1){
   var d = new Date();
-  d.setTime(d.getTime()+(1*24*60*60*1000));
+  d.setTime(d.getTime()+(day*24*60*60*1000));
   var expires = "expires="+d.toGMTString();
   document.cookie = cname + "=" + cvalue + "; " + expires;
 }
@@ -17,11 +18,23 @@ function getCookie(cname: string)
   }
   return "";
 }
+
+export function delCookie(){
+  setCookie(TokenKey, null, -1)
+}
+
 export function getToken() {
-    return getCookie(TokenKey)
-  }
+  return getCookie(TokenKey)
+}
   
-  export function setToken(token: string) {
-    return setCookie(TokenKey, token)
-  }
-  
+export function setToken(token: string) {
+  setCookie(TokenKey, token)
+}
+
+export function setMobileNo(value: string) {
+  localStorage.setItem(mobileKey, value)
+}
+
+export function getMobileNo() {
+  return localStorage.getItem(mobileKey)
+}

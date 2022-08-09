@@ -143,9 +143,29 @@
           padding: 0 2px;
           color:#1890ff;
         }
-        :global(.ant-radio-inner) {
-          border-color: #2087FF;
-          background-color: #000;
+        .agreeBox{
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          color: @fff70;
+          margin-top: 8px;
+          .RadioBox{
+            position: relative;
+            width: 14px;
+            height: 14px;
+            border: 1px solid #2087FF;
+            border-radius: 50%;
+            margin-right: 8px;
+            .Radio{
+              position: absolute;
+              left: 3px;
+              top: 3px;
+              background-color: #69aefd;
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+            }
+          }
         }
       }
       .captcha{

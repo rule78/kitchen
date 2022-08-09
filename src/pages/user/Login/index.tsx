@@ -1,17 +1,18 @@
-import { goLogin, checkPhone, getSms, goRegister } from '@/services/kitchen/api';
+import { goLogin, checkPhone, getSms, goRegister, updatePassword } from '@/services/kitchen/api';
 import { Alert, message, Tabs, Form, Input, Button, InputNumber, Radio } from 'antd';
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { history, useModel } from 'umi';
 import { throttle } from 'lodash'
 import { validateMobile } from '@/utils/index'
-import { setToken } from '@/utils/auth'
+import { setToken, setMobileNo } from '@/utils/auth'
 import BgImg from '@/assets/images/home_content.png'
 import styles from './index.less';
 
-const initCaptchaTime = 5
+const initCaptchaTime = 60
 const Login = () => {
   const [userLoginState, setUserLoginState] = useState({});
   const [type, setType] = useState<string>('mobile');
+  const [agreeData, setAgreeData] = useState<boolean>(false);
   const { initialState, setInitialState } = useModel('@@initialState');
   const [captchaTime, setCaptchaTime] = useState<number>(initCaptchaTime);
   const countRef = useRef(captchaTime);
@@ -33,28 +34,50 @@ const Login = () => {
   useEffect(() => {
     countRef.current = captchaTime;  
   });
+  const onAgreementChange = () => {
+    setAgreeData(!agreeData)
+  }
   const handleSubmit = async (values: any) => {
     try {
       let msg = null
       // 手机注册登录
       if (isNew && type === 'mobile') {
-        msg = await goRegister({ ...values, isCheckCode: true });
+        if (!agreeData) {
+          message.warning('请阅读并勾选协议');
+          return
+        }
+        await goRegister({ ...values, isCheckCode: true });
+        msg = await goLogin({ ...values, isCheckCode: true });
       } else if (type === 'mobile') { // 手机登录
+        if (!agreeData) {
+          message.warning('请阅读并勾选协议');
+          return
+        }
         msg = await goLogin({ ...values, isCheckCode: true });
       } else if (type === 'account') {
         msg = await goLogin({ ...values, isCheckCode: false });
-      } // 密码登录
+      } else if (type === 'findAccount') { // 找回密码
+        const res = await updatePassword({ ...values, isCheckCode: true })
+        if (res.message === 'success') {
+          message.success('修改成功！');
+          setType('account')
+          return
+        }
+      }
       if (msg.data) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
         setToken(msg.data.userId)
+        setMobileNo(values.mobileNo)
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
         if (!history) return;
         const { query } = history.location;
         const { redirect } = query as any;
-        history.push(redirect || '/union/join');
+        history.push(redirect || '/union/index');
         return;
+      } else {
+        message.error(msg.message);
       }
       // 如果失败去设置用户错误信息
       setUserLoginState(msg);
@@ -130,12 +153,17 @@ const Login = () => {
   const AgreeEle: any = () => {
     return (
       <div className={styles.agreementBox}>
-      <Radio>
-      <div className={styles.agreementContent}>
-      已阅读并同意
-      <div className={styles.agreement}>《用户协议》</div>
-      和<div className={styles.agreement}>《隐私政策》</div></div></Radio></div>
-  )}
+        <div className={styles.agreeBox} onClick={onAgreementChange}>
+          <div className={styles.RadioBox}>{agreeData && <div className={styles.Radio}></div>}</div>
+          <div className={styles.agreementContent}>
+            已阅读并同意
+            <div className={styles.agreement}>《用户协议》</div>和
+            <div className={styles.agreement}>《隐私政策》</div>
+          </div>
+        </div>
+      </div>
+    );
+  };
   const WeixinCodeEle: any = useMemo(() => {
     return (<div className={styles.headerBtn}>
       <div
@@ -306,7 +334,7 @@ const Login = () => {
                     name="password"
                     rules={[{ required: true, message: '请输入密码！' }]}
                   >
-                    <Input.Password placeholder="请输入新密码（1-16字，同时包含数字和" />
+                    <Input.Password placeholder="请输入新密码（1-6字，同时包含数字和" />
                   </Form.Item>
                   <Form.Item noStyle>
                     <Button type="primary" htmlType="submit" block>

@@ -1,67 +1,76 @@
-.drawer{
-    .header{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-left: 6px solid #2087FF;
-        padding: 13px 20px 12px 0;
-        background-color: #001833;
-        font-size: 18px;
-        font-family: PingFangSC-Medium, PingFang SC;
-        font-weight: 500;
-        color: #FFFFFF;
-        line-height: 25px;
-        .title{
-            margin-left: 20px;
-        }
-        .btnList{
-            display: flex;
-            align-items: center; 
-        }
-        .edit{
-            margin-right: 20px;
-            width: 16px;
-            height: 16px;
-            background-image: url('../../assets/images/edit.png');
-            background-repeat: no-repeat;
-            background-size: 100%;
-        }
-        .add{
-            width: 16px;
-            height: 16px;
-            background-image: url('../../assets/images/add.png');
-            background-repeat: no-repeat;
-            background-size: 100%;
-        }
+.drawer {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 20px 12px 0;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 18px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    line-height: 25px;
+    background-color: #001833;
+    border-left: 6px solid #2087ff;
+    .title {
+      margin-left: 20px;
     }
-    .content{
-        padding-left: 20px;
-        .title{
-            font-size: 16px;
-            font-family: PingFangSC-Regular, PingFang SC;
-            font-weight: 400;
-            color: #FFFFFF;
-        }
-        :global(.ant-tree-treenode) {
-            width: 100%;
-        }
-        :global(.ant-tree-switcher) {
-            line-height: 50px;
-        }
-        :global(.ant-tree) {
-            background-color: transparent;
-            color: #FFFFFF;
-        }
-        :global(.ant-tree-node-content-wrapper) {
-            min-height: 48px;
-            line-height: 48px;
-            background-color: #050B2C !important;
-        }
-        :global(.ant-tree-node-selected) {
-            background-color: #050B2C !important;
-        }
-        :global(.ant-tree-node-selected:hover) {
-            background-color: #050B2C !important;
-        }
+    .btnList {
+      display: flex;
+      align-items: center;
     }
+    .edit {
+      width: 16px;
+      height: 16px;
+      margin-right: 20px;
+      background-image: url('../../assets/images/edit.png');
+      background-repeat: no-repeat;
+      background-size: 100%;
+      cursor: pointer;
+    }
+    .add {
+      width: 16px;
+      height: 16px;
+      background-image: url('../../assets/images/add.png');
+      background-repeat: no-repeat;
+      background-size: 100%;
+      cursor: pointer;
+    }
+  }
+  .content {
+    padding-left: 20px;
+    .title {
+      color: #ffffff;
+      font-weight: 400;
+      font-size: 16px;
+      font-family: PingFangSC-Regular, PingFang SC;
+    }
+    :global {
+      .ant-tree-treenode {
+        width: 100%;
+        padding: 0;
+      }
+      .ant-tree-treenode-selected {
+        background-color: #00105a !important;
+      }
+      .ant-tree-node-selected {
+        background-color: #00105a !important;
+      }
+    }
+    :global(.ant-tree-switcher) {
+      line-height: 50px;
+    }
+    :global(.ant-tree) {
+      color: #ffffff;
+      background-color: transparent;
+    }
+    :global(.ant-tree-node-content-wrapper) {
+      min-height: 48px;
+      line-height: 48px;
+      background: #050b2c;
+      animation: none !important;
+    }
+  }
+}
+:global(.ant-modal-footer) {
+  background-color: #002146;
 }
