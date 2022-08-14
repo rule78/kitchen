@@ -136,7 +136,7 @@ const Join = () => {
       cascader, uploadList, detail, storeLogo, ...introduceRes
     } = introduceData
     const { idCardBack, idCardFront, outDate, safeLevelImage,
-      isLongEffective, qualificationLicense, businessLicense,
+      isLongEffective, qualificationLicense, businessLicense, businessTypeIds,
       ...intelligenceRes } = intelligenceData
     // 营业执照有效期 validStartTime validEndTime isLongEffective
     const target = {
@@ -151,6 +151,7 @@ const Join = () => {
       imageDoorUrl: formatFile(uploadList['first']),
       imageCanteenUrl: formatFile(uploadList['second']),
       imageKitchenUrl: formatFile(uploadList['third']),
+      businessTypeIds: [businessTypeIds]
     }
      // 省市区乡镇/街道 provinceId cityId areaId townshipId address
     target['provinceId'] = cascader[0]
@@ -313,7 +314,6 @@ const Join = () => {
               style={{ width: '100%' }}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               treeData={businessType}
-              multiple
               placeholder="请选择主体类型"
               fieldNames={{
                 label: 'businessName',

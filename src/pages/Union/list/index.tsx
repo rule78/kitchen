@@ -66,15 +66,12 @@ const List: React.FC = () => {
   const initData = async () => {
     getDeptData()
     getStaffList()
+    getPositionData()
     setInterval(() => {
       getStaffList()
     }, 30000)
   }
-  const getDeptData = async () => {
-    const res = await getDeptTree({ identityType, relateId })
-    if (res.data) {
-      setDepTreeData(res.data)
-    }
+  const getPositionData = async () => {
     const positionRes = await getStoreStaffPosition()
     setPosition(positionRes.data.map((i: any) => {
       return {
@@ -82,6 +79,12 @@ const List: React.FC = () => {
         value: i.id
       }
     }))
+  }
+  const getDeptData = async () => {
+    const res = await getDeptTree({ identityType, relateId })
+    if (res.data) {
+      setDepTreeData(res.data)
+    }
   }
 
   const getStaffList = async (params: any = {}) => {
@@ -199,8 +202,8 @@ const List: React.FC = () => {
     setIsModalVisible(false)
   }
   const copyMsg = (record: any) => {
-    const identityTypeText = `&name=${name}&identityType=` + identityType
-    const link = 'http://dve.985cn.com/h5/#/login?relateId='+relateId+ '&staffId='+record.id+identityTypeText
+    const identityTypeText = `&name=${encodeURIComponent(name)}&identityType=` + identityType
+    const link = 'http://dve.985cn/h5/#/login?relateId='+relateId+ '&staffId='+record.id+identityTypeText
     copyUrl(`点击加入我的企业"${name}",一起开启全新办公体验吧. `+ link)
   }
   const columns: ColumnsType<DataType> = [

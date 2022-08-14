@@ -70,26 +70,26 @@ const Home = () => {
   }
   const CardEle: any = ({ title, icon, desc, type }: CardProps) => {
     return (
-      <div className={styles.cardBox} key={type}>
-        <div className={styles.headerBox}>
-          <img className={styles.icon} src={icon} />
-          <div className={styles.title}>{title}</div>
-          <div className={styles.desc}>{desc}</div>
-        </div>
-        <div className={styles.contentBox}>
-          {cardList[type].length === 0 && <div className={styles.empty}>空</div>}
-          {cardList[type].length > 0 && cardList[type].map((item) => (
-            <div className={styles.itemBox} key={item.relateId} onClick={() => toList(item)}>
-              <div className={styles.desc}>
-                <div className={styles.title}>{item.name}</div>
-                <div className={styles.turnRight}></div>
+        <div className={styles.cardBox} key={type}>
+          <div className={styles.headerBox}>
+            <img className={styles.icon} src={icon} />
+            <div className={styles.title}>{title}</div>
+            <div className={styles.desc}>{desc}</div>
+          </div>
+          <div className={styles.contentBox}>
+            {cardList[type].length === 0 && <div className={styles.empty}>空</div>}
+            {cardList[type].length > 0 && cardList[type].map((item) => (
+              <div className={styles.itemBox} key={item.relateId} onClick={() => toList(item)}>
+                <div className={styles.desc}>
+                  <div className={styles.title}>{item.name}</div>
+                  <div className={styles.turnRight}></div>
+                </div>
+                <img className={styles.logo} src={item.logo} />
               </div>
-              <img className={styles.logo} src={item.logo} />
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    );
+      );
   };
   return (
     <div className={styles.home}>
@@ -98,6 +98,9 @@ const Home = () => {
         currentUser.unionList?.length > 0 && (
           <div className={styles.loginContainer}>
           {unionList.map((i) => {
+            if (i.type !== 'shop' && cardList[i.type].length === 0 ) {
+              return ''
+            }
             return <CardEle {...i} key={i.type} />;
           })}
         </div>

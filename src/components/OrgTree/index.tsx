@@ -65,8 +65,8 @@ const drawer: React.FC = ({ options, getDeptData, getStaffList }: any) => {
           const res = await saveDepartment({
             ...rest,
             ...values,
-            parentId: rest.parentId || 0,
-            level: rest.level || 1,
+            parentId: rest.id || 0,
+            level: rest.level + 1 || 1,
             identityType,
             relateId
           })
@@ -103,7 +103,9 @@ const drawer: React.FC = ({ options, getDeptData, getStaffList }: any) => {
       <div className={styles.header}>
         <div className={styles.title}>{mainName}</div>
         <div className={styles.btnList}>
-          <div className={styles.edit} onClick={toEdit}></div>
+          {
+            activeList && <div className={styles.edit} onClick={toEdit}></div>
+          }
           <div className={styles.add} onClick={toAdd}></div>
         </div>
       </div>

@@ -16,23 +16,6 @@
     ],
   },
   {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
-    routes: [
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        icon: 'smile',
-        component: './Welcome',
-      },
-      {
-        component: './404',
-      },
-    ],
-  },
-  {
     name: 'union.index',
     icon: 'table',
     layout: false,
@@ -45,13 +28,6 @@
     layout: false,
     path: '/union/join',
     component: './Union/Join',
-  },
-  {
-    name: 'union.login',
-    icon: 'table',
-    layout: false,
-    path: '/union/login',
-    component: './Union/login',
   },
   {
     name: 'union.list',
