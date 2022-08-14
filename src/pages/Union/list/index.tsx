@@ -203,7 +203,7 @@ const List: React.FC = () => {
   }
   const copyMsg = (record: any) => {
     const identityTypeText = `&name=${encodeURIComponent(name)}&identityType=` + identityType
-    const link = 'http://dve.985cn/h5/#/login?relateId='+relateId+ '&staffId='+record.id+identityTypeText
+    const link = 'http://dve.985cn.com/h5/#/login?relateId='+relateId+ '&staffId='+record.id+identityTypeText
     copyUrl(`点击加入我的企业"${name}",一起开启全新办公体验吧. `+ link)
   }
   const columns: ColumnsType<DataType> = [

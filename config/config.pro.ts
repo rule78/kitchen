@@ -50,11 +50,11 @@ export default defineConfig({
   title: false,
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],
-  base: '/frontend',
+  base: '/',
   history: { type: 'hash' },
-  publicPath: './',
+  publicPath: 'http://www.985cw.com/',
   manifest: {
-    basePath: '/frontend',
+    basePath: '/',
   },
   // Fast Refresh 热更新
   fastRefresh: {},
