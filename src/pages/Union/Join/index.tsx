@@ -136,7 +136,7 @@ const Join = () => {
       cascader, uploadList, detail, storeLogo, ...introduceRes
     } = introduceData
     const { idCardBack, idCardFront, outDate, safeLevelImage,
-      isLongEffective, qualificationLicense, businessLicense, businessTypeIds,
+      qualificationLicense, businessLicense, businessTypeIds,
       ...intelligenceRes } = intelligenceData
     // 营业执照有效期 validStartTime validEndTime isLongEffective
     const target = {
@@ -159,8 +159,10 @@ const Join = () => {
     target['areaId'] = cascader[2]
     target['townshipId'] = cascader[3]
     target['address'] = detail
-    target['validStartTime'] = new Date(outDate[0]).getTime()
-    target['validEndTime'] = new Date(outDate[1]).getTime()
+    if (!isLongEffective) {
+      target['validStartTime'] = new Date(outDate[0]).getTime()
+      target['validEndTime'] = new Date(outDate[1]).getTime()
+    }
     target['isLongEffective'] = isLongEffective ? 1 : 0
     target['mobileNo'] = getMobileNo()
     try {
@@ -170,6 +172,8 @@ const Join = () => {
         setTimeout(() => {
           history.push('/union/index');
         }, 3000)
+      } else {
+        message.error(res.message);
       }
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
@@ -221,9 +225,8 @@ const Join = () => {
     }
   }
   const validateDate = (_, value: any) => {
-    console.log(value, 'value')
-    if (!value) {
-      return Promise.reject(new Error('不可以为空'))
+    if (!value && !isLongEffective) {
+      return Promise.reject(new Error('选择时间段或者勾选长期！'))
     }
     return Promise.resolve()
   }

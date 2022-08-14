@@ -4,6 +4,7 @@ import { request } from 'umi';
 import { getToken } from '@/utils/auth'
 
 const mainApi = '/main-api/main'
+const systemApi = '/sys-api/system'
 
 // 新增员工
 export async function createStaff(
@@ -111,5 +112,25 @@ export async function getStoreStaffList(
     data: {
       ...params,
     },
+  });
+}
+
+// 商家岗位列表查询
+export async function getStorepositionList(
+  params: { name?: string; pageNum: number; pageSize: number; },
+) {
+  return request<any>(`${mainApi}/store/position/list`, {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 加入商铺
+export async function joinStore() {
+  return request<any>(`${systemApi}/user/registerAndJoin`, {
+    method: 'POST',
+    data: {"identityType":"1","staffId":"5","relateId":"1","mobileNo":"15088131812","password":"123456"},
   });
 }

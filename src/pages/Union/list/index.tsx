@@ -15,7 +15,7 @@ import {
   saveStoreStaff,
   updateStoreStaff,
   getStoreStaffInfo,
-  getStoreStaffPosition,
+  getStorepositionList,
   getStoreStaffList,
 } from '@/services/kitchen/store'
 import { history } from 'umi';
@@ -72,8 +72,11 @@ const List: React.FC = () => {
     }, 30000)
   }
   const getPositionData = async () => {
-    const positionRes = await getStoreStaffPosition()
-    setPosition(positionRes.data.map((i: any) => {
+    const positionRes = await getStorepositionList({
+      pageNum: 1,
+      pageSize: 99
+    })
+    setPosition(positionRes?.data?.list.map((i: any) => {
       return {
         label: i.name,
         value: i.id
@@ -202,8 +205,14 @@ const List: React.FC = () => {
     setIsModalVisible(false)
   }
   const copyMsg = (record: any) => {
-    const identityTypeText = `&name=${encodeURIComponent(name)}&identityType=` + identityType
-    const link = 'http://dve.985cn.com/h5/#/login?relateId='+relateId+ '&staffId='+record.id+identityTypeText
+    // const { NODE_ENV } = process.env;
+    // 需移至dictronary
+    let host = 'http://dve.985cn.com'
+    // if (NODE_ENV === "development") {
+    //   host = 'http://dve.985cn.com'
+    // }
+    const identityTypeText = `&identityType=${identityType}&name=${encodeURIComponent('我的')}`
+    const link = `${host}/h5/#/login?relateId=`+relateId+ '&staffId='+record.id+identityTypeText
     copyUrl(`点击加入我的企业"${name}",一起开启全新办公体验吧. `+ link)
   }
   const columns: ColumnsType<DataType> = [
@@ -360,7 +369,7 @@ const List: React.FC = () => {
           </Form.Item>
           <Form.Item
             name="positionId"
-            label="员工编号"
+            label="具体岗位"
             rules={[{ required: true }]}
           >
             <Select>
@@ -422,7 +431,7 @@ const List: React.FC = () => {
           <Diveder text="资质证件" style={{ marginTop: '30px', marginBottom: '20px' }} />
           <Form.Item
             name="workCard"
-            label="工作证"
+            label="健康证"
             rules={[{ required: true }]}
             extra={'证件文字清晰，建议使用原图'}
           >
@@ -439,7 +448,7 @@ const List: React.FC = () => {
           <Form.Item
             name="outDate"
             rules={[{ required: true }]}
-            label="工作证有效期"
+            label="健康证有效期"
           >
             <DatePicker.RangePicker style={{ width: '70%' }} />
           </Form.Item>
