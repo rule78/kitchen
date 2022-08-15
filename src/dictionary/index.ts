@@ -3,10 +3,13 @@ import cooperatePng from '@/assets/images/cooperate.png'
 import governmentPng from '@/assets/images/government.png'
 import shopPng from '@/assets/images/shop.png'
 
+const { NODE_ENV } = process.env;
+
+export const HOST = NODE_ENV === "development" ? 'http://dve.985cn.com' : 'http://www.985cw.com/'
+
+// 协议问题弃用
 export const uploadApi = 'https://www.mocky.io/v2/5cc8019d300000980a055e76'
 // 'http://dve.985cn.com/main-api/system/tool/oss/upload'
-// 'https://www.mocky.io/v2/5cc8019d300000980a055e76'
-// http://dve.985cn.com/main-api/system/tool/oss/upload
 
 export const unionList = [
   {

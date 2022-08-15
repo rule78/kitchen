@@ -9,6 +9,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useState, useEffect, useCallback } from 'react';
 import { uploadApi } from '@/services/kitchen/api'
 import { getDeptTree } from '@/services/kitchen/api'
+import { HOST } from '@/dictionary/index'
 import { formatFile, copyUrl } from '@/utils'
 import { getToken } from '@/utils/auth'
 import {
@@ -72,16 +73,20 @@ const List: React.FC = () => {
     }, 30000)
   }
   const getPositionData = async () => {
-    const positionRes = await getStorepositionList({
-      pageNum: 1,
-      pageSize: 99
-    })
-    setPosition(positionRes?.data?.list.map((i: any) => {
-      return {
-        label: i.name,
-        value: i.id
-      }
-    }))
+    // const positionRes = await getStorepositionList({
+    //   pageNum: 1,
+    //   pageSize: 99
+    // })
+    // setPosition(positionRes?.data?.list.map((i: any) => {
+    //   return {
+    //     label: i.name,
+    //     value: i.id
+    //   }
+    // }))
+    setPosition([{
+      label: '岗位1',
+      value: 0
+    }])
   }
   const getDeptData = async () => {
     const res = await getDeptTree({ identityType, relateId })
@@ -205,14 +210,8 @@ const List: React.FC = () => {
     setIsModalVisible(false)
   }
   const copyMsg = (record: any) => {
-    // const { NODE_ENV } = process.env;
-    // 需移至dictronary
-    let host = 'http://dve.985cn.com'
-    // if (NODE_ENV === "development") {
-    //   host = 'http://dve.985cn.com'
-    // }
     const identityTypeText = `&identityType=${identityType}&name=${encodeURIComponent('我的')}`
-    const link = `${host}/h5/#/login?relateId=`+relateId+ '&staffId='+record.id+identityTypeText
+    const link = `${HOST}/h5/#/login?relateId=`+relateId+ '&staffId='+record.id+identityTypeText
     copyUrl(`点击加入我的企业"${name}",一起开启全新办公体验吧. `+ link)
   }
   const columns: ColumnsType<DataType> = [

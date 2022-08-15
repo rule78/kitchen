@@ -21,9 +21,15 @@ export default {
     },
   },
   test: {
-    '/mock/': {
-      target: 'http://120.76.134.93:3000',
+    '/main-api/': {
+      target: 'http://www.985cw.com/',
       changeOrigin: true,
+      pathRewrite: { '^': '' },
+    },
+    '/sys-api/': {
+      target: 'http://www.985cw.com/',
+      changeOrigin: true,
+      pathRewrite: { '^': '' },
     },
   },
   pre: {
