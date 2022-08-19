@@ -95,7 +95,7 @@ const Home = () => {
     <div className={styles.home}>
       <Header />
       {
-        currentUser.unionList?.length > 0 && (
+        currentUser?.unionList?.length > 0 && (
           <div className={styles.loginContainer}>
           {unionList.map((i) => {
             if (i.type !== 'shop' && cardList[i.type].length === 0 ) {
@@ -107,7 +107,7 @@ const Home = () => {
         )
       }
       {
-        currentUser.unionList?.length === 0 && (
+        currentUser?.unionList?.length === 0 && (
           <div className={styles.content}>
           <div className={styles.mainImg}></div>
         </div>

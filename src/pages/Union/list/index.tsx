@@ -210,8 +210,9 @@ const List: React.FC = () => {
     setIsModalVisible(false)
   }
   const copyMsg = (record: any) => {
+    console.log(process.env)
     const identityTypeText = `&identityType=${identityType}&name=${encodeURIComponent('我的')}`
-    const link = `${HOST}/h5/#/login?relateId=`+relateId+ '&staffId='+record.id+identityTypeText
+    const link = `http://dve.985cn.com/h5/#/login?relateId=`+relateId+ '&staffId='+record.id+identityTypeText
     copyUrl(`点击加入我的企业"${name}",一起开启全新办公体验吧. `+ link)
   }
   const columns: ColumnsType<DataType> = [

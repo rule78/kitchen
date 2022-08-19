@@ -1,5 +1,5 @@
 import { goLogin, checkPhone, getSms, goRegister, updatePassword } from '@/services/kitchen/api';
-import { Alert, message, Tabs, Form, Input, Button, InputNumber, Radio } from 'antd';
+import { message, Tabs, Form, Input, Button, InputNumber } from 'antd';
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { history, useModel } from 'umi';
 import { throttle } from 'lodash'
@@ -10,7 +10,6 @@ import styles from './index.less';
 
 const initCaptchaTime = 60
 const Login = () => {
-  const [userLoginState, setUserLoginState] = useState({});
   const [type, setType] = useState<string>('mobile');
   const [agreeData, setAgreeData] = useState<boolean>(false);
   const { initialState, setInitialState } = useModel('@@initialState');
@@ -31,6 +30,11 @@ const Login = () => {
       }));
     }
   };
+  useEffect(() => {
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }, []);
   useEffect(() => {
     countRef.current = captchaTime;  
   });
@@ -79,8 +83,6 @@ const Login = () => {
       } else {
         message.error(msg.message);
       }
-      // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
       message.error(defaultLoginFailureMessage);

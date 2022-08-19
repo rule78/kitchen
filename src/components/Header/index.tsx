@@ -123,7 +123,7 @@ const loginOut = async () => {
                 <div onClick={toApply} className={styles.text}>申请入驻</div>
               </div>)
             }
-            <div className={styles.nameBox}><div className={styles.text}>{currentUser.mobileNo}</div></div>
+            <div className={styles.nameBox}><div className={styles.text}>{currentUser?.mobileNo}</div></div>
             <div className={styles.leaveBtn} onClick={onMenuClick}>退出</div>
           </div>
         </div>

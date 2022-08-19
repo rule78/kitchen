@@ -9,8 +9,6 @@ import { getToken, getMobileNo } from '@/utils/auth'
 import defaultSettings from '../config/defaultSettings';
 import { currentUser as queryCurrentUser } from '@/services/kitchen/api';
 
-const { HOST } = process.env;
-
 const loginPath = '/user/login';
 const defaultHomeLogo = 'https://lhcdn.lanhuapp.com/web/imgs/download-xd125adfb8.svg'
 
@@ -46,19 +44,19 @@ export async function getInitialState(): Promise<{
     }
     return undefined;
   };
-  console.log(HOST, 'HOSTHOSTHOST')
   // 如果不是登录页面，执行
   if (!history.location.pathname.includes(loginPath)) {
     const currentUser = await fetchUserInfo();
+    console.log(currentUser, 'currentUser')
     return {
       fetchUserInfo,
       currentUser,
-      host: HOST,
       settings: defaultSettings,
     };
   }
   return {
     fetchUserInfo,
+    currentUser: {},
     settings:  defaultSettings,
   };
 }

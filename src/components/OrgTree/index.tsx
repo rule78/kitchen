@@ -122,7 +122,7 @@ const drawer: React.FC = ({ options, getDeptData, getStaffList }: any) => {
         />
       </div>
       <Modal
-        title={type === 'add' ? '添加下级部门' : '编辑部门'}
+        title={type === 'add' ? '添加下级' : '编辑部门'}
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
