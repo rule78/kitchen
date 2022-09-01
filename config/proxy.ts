@@ -33,8 +33,13 @@ export default {
     },
   },
   pre: {
-    '/api/': {
-      target: 'your pre url',
+    '/main-api/': {
+      target: 'http://www.985cw.com/',
+      changeOrigin: true,
+      pathRewrite: { '^': '' },
+    },
+    '/sys-api/': {
+      target: 'http://www.985cw.com/',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },

@@ -10,7 +10,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { uploadApi } from '@/services/kitchen/api'
 import { getDeptTree } from '@/services/kitchen/api'
 import { HOST } from '@/dictionary/index'
-import { formatFile, copyUrl } from '@/utils'
+import { formatFile, validateCardId, copyUrl } from '@/utils'
 import { getToken } from '@/utils/auth'
 import {
   saveStoreStaff,
@@ -424,7 +424,7 @@ const List: React.FC = () => {
           <Form.Item
             name="cardNo"
             label="身份证号码"
-            rules={[{ required: true, validator: validatCode }]}
+            rules={[{ required: true, validator: validateCardId }]}
           >
             <Input placeholder='输入身份证号码'/>
           </Form.Item>

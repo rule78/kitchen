@@ -10,7 +10,8 @@ const Agreement: React.FC<DividerProps> = ({ text }) => {
   return <iframe
     style={{width: '100%',
       height: '100%',
-      backgroundColor: '#fff'}}
+      border: 'none'
+    }}
     src="http://dve.985cn.com/aggrement.html"></iframe>
 };
 export default Agreement;

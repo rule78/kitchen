@@ -4,7 +4,7 @@ import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { history, useModel } from 'umi';
 import { throttle } from 'lodash'
 import { validateMobile } from '@/utils/index'
-import { setToken, setMobileNo } from '@/utils/auth'
+import { setToken, setAuth, setMobileNo } from '@/utils/auth'
 import BgImg from '@/assets/images/home_content.png'
 import styles from './index.less';
 
@@ -73,6 +73,7 @@ const Login = () => {
         message.success(defaultLoginSuccessMessage);
         setToken(msg.data.userId)
         setMobileNo(values.mobileNo)
+        setAuth(msg.data.token)
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
         if (!history) return;

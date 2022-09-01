@@ -16,6 +16,17 @@
     ],
   },
   {
+    path: '/test',
+    layout: false,
+    routes: [
+      {
+        name: 'test',
+        path: '/test',
+        component: '../components/Y/Cropper/Single',
+      },
+    ],
+  },
+  {
     name: 'union.index',
     icon: 'table',
     layout: false,

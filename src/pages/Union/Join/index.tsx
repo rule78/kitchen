@@ -3,7 +3,7 @@ import {
   Upload, Select, Row, Col, DatePicker, Radio, TreeSelect } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useState, useRef, useEffect } from 'react';
-import { formatFile } from '@/utils'
+import { formatFile, validateCardId } from '@/utils'
 import { uploadApi } from '@/services/kitchen/api' 
 import { getAreaTree, getBusinessType, saveStore } from '@/services/kitchen/store';
 import Header from '@/components/Header'
@@ -26,11 +26,11 @@ const formItemLayout = {
 };
 const steps = [
   {
-    title: '商铺简介',
+    title: '主体介绍',
     type: 'introduce',
   },
   {
-    title: '商铺资质',
+    title: '企业资质',
     type: 'intelligence',
   },
   {
@@ -38,6 +38,7 @@ const steps = [
     type: 'agreement',
   },
 ];
+const uploadLimitTips = '上传图片格式：支持png、jpg、jpeg格式，图片大小5M'
 const Join = () => {
   const { initialState } = useModel('@@initialState');
   const [current, setCurrent] = useState(0);
@@ -250,7 +251,7 @@ const Join = () => {
   const ContentEle: any = () => {
     if (steps[current].type === 'introduce') {
       return <div>
-        <Diveder text="店铺经营者账号信息" style={{ marginTop: '54px', marginBottom: '21px' }} />
+        <Diveder text="主体经营管理主要负责人信息" style={{ marginTop: '54px', marginBottom: '21px' }} />
         <Form
           name="basic"
           {...formItemLayout}
@@ -260,25 +261,26 @@ const Join = () => {
           autoComplete="off"
         >
           <Form.Item
-            label="手机号码"
+            label="入驻申请帐号"
             name="mobileNo"
           >
             <>
             <div className={styles.phoneNumber}>{ initialState?.currentUser?.mobileNo }</div>
-            <div className={styles.bottomTips}>申请账号将成为店铺所有者账号，拥有该店铺在食上云平台最高管理权限，如需更换，请点击右上角退出登录更换账号。</div>
+            <div className={styles.bottomTips}>申请入驻帐户将成为该经营主体所有权限帐户，拥有该经营主体在食上安全云平台最高管理权限，如需更换，请点击右上角退出登录更换帐号。</div>
             </>
           </Form.Item>
           <Form.Item
-            label="经营者姓名"
+            label="主体负责人实名认证"
             name="userName"
-            rules={[{ required: true, message: '请输入经营者姓名!' }]}
+            rules={[{ required: true, message: '请输入姓名!' }]}
+            extra="经营主体的负责人，可以是法人，可以是经营主体的负责人"
           >
-            <Input placeholder="请输入经营者姓名" />
+            <Input placeholder="请输入姓名" />
           </Form.Item>
           <Form.Item
-            label="经营者身份证号"
+            label="主体负责人身份证号"
             name="cardNo"
-            rules={[{ required: true, message: '请输入身份证号码!' }]}
+            rules={[{ required: true, validator: validateCardId }]}
           >
             <Input
               placeholder="请输入身份证号码"
@@ -481,7 +483,7 @@ const Join = () => {
           <Form.Item
             label="法人身份证号"
             name="legalPersonCardNo"
-            rules={[{ required: true, validator: validatNumber }]}
+            rules={[{ required: true, validator: validateCardId }]}
           >
             <Input placeholder="请输入法人身份证号" style={{ width: '100%' }} />
           </Form.Item>
@@ -575,10 +577,10 @@ const Join = () => {
             <div className={styles.contentBg}></div>
             <div className={styles.relativeBox}>
               <div className={styles.logo}></div>
-              <div className={styles.joinTitle}>商家入驻</div>
-              <div className={styles.text1}>适用于商家店铺</div>
-              <div className={styles.text2}>需提交营业执照与商家资质证明</div>
-              <div onClick={() => handleToJoin()} className={styles.btn}>商家入驻</div>
+              <div className={styles.joinTitle}>经营主体入驻</div>
+              <div className={styles.text1}>适用于经营主体</div>
+              <div className={styles.text2}>提交营业执照与企业资质证明</div>
+              <div onClick={() => handleToJoin()} className={styles.btn}>建立诚信经营档案</div>
             </div>
           </div>
         </div>

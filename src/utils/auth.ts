@@ -1,4 +1,5 @@
 const TokenKey = `SKY_CLIENT_TOKEN$`
+const AuthKey = 'AUTH'
 const mobileKey = 'mobileNo'
 
 function setCookie(cname: string, cvalue: any, day: number = 1){
@@ -29,6 +30,14 @@ export function getToken() {
   
 export function setToken(token: string) {
   setCookie(TokenKey, token)
+}
+
+export function setAuth(token: string) {
+  setCookie(AuthKey, token)
+}
+
+export function getAuth() {
+  return getCookie(AuthKey)
 }
 
 export function setMobileNo(value: string) {

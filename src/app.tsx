@@ -4,13 +4,32 @@ import LeftContent from '@/components/LeftContent';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { PageLoading, SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from 'umi';
-import { history } from 'umi';
-import { getToken, getMobileNo } from '@/utils/auth'
+import { history, RequestConfig } from 'umi';
+import { getToken, getMobileNo, getAuth } from '@/utils/auth'
 import defaultSettings from '../config/defaultSettings';
 import { currentUser as queryCurrentUser } from '@/services/kitchen/api';
 
 const loginPath = '/user/login';
 const defaultHomeLogo = 'https://lhcdn.lanhuapp.com/web/imgs/download-xd125adfb8.svg'
+ 
+export const request: RequestConfig = {
+  timeout: 8000,
+  headers: {
+    "token": getAuth()
+  },
+  requestInterceptors: [
+    // 直接写一个 function，作为拦截器
+    (url, options) =>
+      {
+        let target = options
+        target.headers = {
+          ...target.headers,
+          "token": getAuth()
+        }
+        return { url, options: target }
+      },
+  ]
+};
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
